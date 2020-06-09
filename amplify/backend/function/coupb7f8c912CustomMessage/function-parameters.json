@@ -1,0 +1,24 @@
+{
+    "trigger": true,
+    "modules": [
+        "verification-link"
+    ],
+    "parentResource": "coupb7f8c912",
+    "functionName": "coupb7f8c912CustomMessage",
+    "resourceName": "coupb7f8c912CustomMessage",
+    "parentStack": "auth",
+    "triggerEnvs": [
+        {
+            "key": "RESOURCENAME",
+            "value": "resourceName"
+        }
+    ],
+    "triggerDir": "/Users/russellhoy/.nvm/versions/node/v14.3.0/lib/node_modules/@aws-amplify/cli/node_modules/amplify-category-auth/provider-utils/awscloudformation/utils/../triggers/CustomMessage",
+    "triggerTemplate": "CustomMessage.json.ejs",
+    "roleName": "coupb7f8c912CustomMessage",
+    "skipEdit": true,
+    "REDIRECTURL": "http://localhost:3000/",
+    "EMAILSUBJECT": "Welcome! Please confirm your email",
+    "EMAILMESSAGE": "We want to hear your voice, please confirm your email address below.",
+    "RESOURCENAME": "resourceName"
+}
