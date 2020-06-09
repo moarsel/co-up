@@ -22,11 +22,10 @@ type Proposal
   title: String!
   description: String!
   topicID: ID!
-  topic: Topic @connection(fields: ["topicID"])
   userID: ID!
   user: User @connection(fields: ["userID"])
   comments: [Comment] @connection(keyName: "byProposal", fields: ["id"])
-  votes: [Vote] @connection(keyName: "byVote", fields: ["id"])
+  votes: [Vote] @connection(keyName: "byProposal", fields: ["id"])
 }
 
 type Comment
@@ -35,22 +34,17 @@ type Comment
   @auth(rules: [{ allow: owner }, { allow: private, operations: [read] }]) {
   id: ID!
   proposalID: ID!
-  proposal: Proposal @connection(fields: ["proposalID"])
   content: String!
   userID: ID!
-  user: User @connection(fields: ["userID"])
 }
 
 type Vote
   @model
   @key(name: "byProposal", fields: ["proposalID", "id"])
-  @key(name: "byProposalUser", fields: ["proposalID", "userID"])
   @auth(rules: [{ allow: owner }, { allow: private, operations: [read] }]) {
   id: ID!
   proposalID: ID!
-  proposal: Proposal @connection(fields: ["proposalID"])
   userID: ID!
-  user: User @connection(fields: ["userID"])
 }
 
 type User

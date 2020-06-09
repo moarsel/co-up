@@ -1,18 +1,39 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   BrowserRouter as Router,
   Switch,
   Route,
   NavLink,
 } from "react-router-dom";
-
-import { Grommet, Heading, Nav, Anchor, Avatar, Text } from "grommet";
-import { Calendar, ChatOption, Money, User } from "grommet-icons";
+import {
+  Grommet,
+  Heading,
+  Nav,
+  Anchor,
+  Avatar,
+  Text,
+  DropButton,
+  Box,
+  Button,
+} from "grommet";
+import {
+  Calendar,
+  ChatOption,
+  Money,
+  User as UserIcon,
+  Google,
+  Facebook,
+} from "grommet-icons";
 import { theme } from "./theme";
 import { AppBar } from "./components/AppBar";
 
-import Amplify, { Auth } from "aws-amplify";
-import { withAuthenticator, AmplifySignOut } from "@aws-amplify/ui-react";
+import Amplify, { Auth, DataStore } from "aws-amplify";
+import {
+  withAuthenticator,
+  AmplifyFacebookButton,
+  AmplifyGoogleButton,
+  AmplifySignOut,
+} from "@aws-amplify/ui-react";
 
 import awsconfig from "./aws-exports";
 
@@ -21,36 +42,48 @@ import HomePage from "./pages/HomePage";
 import TopicsPage from "./pages/TopicsPage";
 import TopicsDetail from "./pages/TopicsDetail";
 import CreateTopic from "./pages/CreateTopic";
+import { User } from "./models";
 
 Amplify.configure(awsconfig);
 
-function App() {
-  useEffect(() => {
-    (async function () {
-      const currentUser = await Auth.currentUserInfo();
-      // const proposals = (await DataStore.query(Proposal)).filter(
-      //   (c) => c.topic === "21c8e78c-e2a2-4bde-a1c1-cf8114bd1866"
-      // );
-      // const topic = await DataStore.save(
-      //   new Topic({
-      //     title: "My First Post",
-      //     description: "test",
-      //     type: "Poll",
-      //     reward: 0,
-      //     userID: currentUser.id,
-      //   })
-      // );
+async function oauthSignup(provider, setUser) {
+  await Auth.federatedSignIn({ provider: provider });
+}
 
-      // console.log(currentUser, proposals);
-      // await DataStore.save(
-      //   new Proposal({
-      //     title: "My First Post",
-      //     description: "test",
-      //     userID: currentUser.id,
-      //     topic: topic,
-      //   })
-      // );
-    })();
+async function getUser(setUser) {
+  let appUser;
+  try {
+    const authUser = await Auth.currentUserInfo();
+    appUser = await DataStore.query(User, authUser.id);
+
+    console.log(authUser, appUser);
+    if (!appUser || !appUser.id) {
+      console.log("creating new");
+      appUser = await DataStore.save(
+        new User({
+          name: authUser.attributes.name,
+          email: authUser.id,
+          tokens: 100,
+        })
+      );
+    }
+    setUser(appUser);
+  } catch (e) {
+    console.warn("not logged in!");
+  }
+}
+
+function App() {
+  const [user, setUser] = useState({ tokens: 0, email: "", name: "" });
+
+  useEffect(() => {
+    getUser(setUser);
+
+    DataStore.observe(User, (u) => u.email("eq", user.email)).subscribe(
+      (msg) => {
+        setUser(user);
+      }
+    );
   }, []);
 
   return (
@@ -112,26 +145,45 @@ function App() {
                   }}
                   style={{ display: "flex", alignItems: "center" }}
                 >
-                  <Calendar color="white" />
-                  <Text color="white" margin={{ left: "small", top: "xsmall" }}>
-                    Booking
-                  </Text>
+                  <Calendar />
+                  <Text margin={{ left: "small", top: "xsmall" }}>Booking</Text>
                 </NavLink>
-                <NavLink
-                  to="/user"
-                  component={Anchor}
-                  activeStyle={{
-                    fontWeight: "bold",
-                    color: "red",
-                  }}
-                >
-                  <Avatar background="accent-2">
-                    <User color="white" />
-                  </Avatar>
-                </NavLink>
+                <DropButton
+                  label={
+                    <Box flex direction="row" align="center">
+                      Up-Votes: {user.tokens}
+                      <Avatar margin={{ left: "small" }} background="accent-2">
+                        <UserIcon color="white" />
+                      </Avatar>
+                    </Box>
+                  }
+                  dropAlign={{ top: "bottom", right: "right" }}
+                  dropContent={
+                    <Box width={"medium"} background="light-1" pad="medium">
+                      {user && (
+                        <>
+                          <AmplifyFacebookButton
+                            onClick={() => oauthSignup("Facebook", setUser)}
+                          />
+                          <AmplifyGoogleButton
+                            onClick={() => oauthSignup("Google", setUser)}
+                          />
+                        </>
+                      )}
+                      {user && (
+                        <Text margin="medium" weight="bold" size="large">
+                          {user.name}
+                        </Text>
+                      )}
+                      {user && user.tokens && (
+                        <Text margin="medium">Earned this month: 300</Text>
+                      )}
+                      {user && <AmplifySignOut />}
+                    </Box>
+                  }
+                />
               </Nav>
             </AppBar>
-            {/* <AmplifySignOut /> */}
           </header>
 
           <Switch>
@@ -158,4 +210,4 @@ function App() {
   );
 }
 
-export default withAuthenticator(App);
+export default App;

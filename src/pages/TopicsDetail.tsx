@@ -11,54 +11,65 @@ import {
   Button,
   Form,
 } from "grommet";
-
 import { History, CircleInformation, Trophy } from "grommet-icons";
 import { withAuthenticator } from "@aws-amplify/ui-react";
-
-// import { Proposal } from "../../../components/Proposal";
 import { DataStore, Auth } from "aws-amplify";
+
 import { Proposal } from "../models";
 import { useTopicByID } from "../hooks/topicHooks";
-import { useUserID } from "../hooks/userHooks";
 import { ProposalView } from "../components/ProposalView";
-import { useProposalsByTopicID } from "../hooks/proposalHooks";
 
 function TopicDetails() {
-  let { id } = useParams();
+  const { id } = useParams();
+
+  const [proposals, setProposals] = useState([]);
+
   const initialProposalFormState = {
     title: "",
     description: "",
-    topicID: "21c8e78c-e2a2-4bde-a1c1-cf8114bd1866",
-    userID: "us-east-1:d36e982a-2bf8-4687-b211-f18e11152d73",
+    topicID: id,
+    userID: "",
   };
-
-  useEffect(() => {
-    (async function () {
-      const currentUser = await Auth.currentUserInfo();
-      // setInput("userID", currentUser.id);
-      // setInput("topicID", id);
-
-      // console.log(proposalFormState, currentUser.id);
-    })();
-  }, []);
 
   const [proposalFormState, setProposalFormState] = useState(
     initialProposalFormState
   );
 
-  const topic = useTopicByID(id);
-  const proposals = useProposalsByTopicID(id);
+  useEffect(() => {
+    listProposals(setProposals);
+
+    DataStore.observe(Proposal, (p) => p.topicID("eq", id)).subscribe((msg) => {
+      listProposals(setProposals);
+    });
+  }, []);
+
+  async function listProposals(setProposals) {
+    const proposals = await DataStore.query(Proposal, (p) =>
+      p.topicID("eq", id)
+    );
+    setProposals(proposals);
+  }
 
   function setInput(key: string, value: string) {
     setProposalFormState({ ...proposalFormState, [key]: value });
   }
 
-  function submitProposalForm() {
+  async function submitProposalForm(setProposals) {
     try {
-      if (!proposalFormState.title || !proposalFormState.description) return;
-      (async function () {
-        await DataStore.save(new Proposal({ ...proposalFormState, topic }));
-      })();
+      if (
+        !proposalFormState.title ||
+        !proposalFormState.description ||
+        !proposalFormState.topicID ||
+        !proposalFormState.userID
+      ) {
+        console.warn("incomplete", proposalFormState);
+        return;
+      }
+      const user = await Auth.currentUserInfo();
+      await DataStore.save(
+        new Proposal({ ...proposalFormState, userID: user.id })
+      );
+      listProposals(setProposals);
       setProposalFormState(initialProposalFormState);
     } catch (err) {
       console.log("error creating todo:", err);
@@ -71,7 +82,8 @@ function TopicDetails() {
     }
   }
 
-  const { reward, type, title, description } = topic;
+  const { reward, type, title, description } = useTopicByID(id);
+
   return (
     <Box
       width="large"
@@ -121,9 +133,10 @@ function TopicDetails() {
 
       <Box pad="medium" border="all" margin={{ vertical: "large" }}>
         <Text size="large">Propose an option</Text>
-        <Form onSubmit={submitProposalForm}>
+        <Form onSubmit={() => submitProposalForm(setProposals)}>
           <FormField label="Title">
             <TextInput
+              required
               onChange={(event) => setInput("title", event.target.value)}
               value={proposalFormState.title}
               placeholder="What option should be added?"
@@ -131,6 +144,7 @@ function TopicDetails() {
           </FormField>
           <FormField label="Description">
             <TextInput
+              required
               onChange={(event) => setInput("description", event.target.value)}
               value={proposalFormState.description}
               placeholder="Why should this proposal be considered"

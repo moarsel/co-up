@@ -1,57 +1,43 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Heading, Text, Button } from "grommet";
-// import { useSelector, useDispatch } from "react-redux";
-// import { API, graphqlOperation, Auth } from "aws-amplify";
-// import { GraphQLResult } from "@aws-amplify/api";
-import { DataStore } from "@aws-amplify/datastore";
-import {
-  Proposal as ProposalModel,
-  Proposal,
-  //   Vote as VoteModel,
-} from "../models";
+import { DataStore, Predicates } from "@aws-amplify/datastore";
+import { Proposal, Vote, User } from "../models";
+import { Auth } from "aws-amplify";
 
-// import { createVote } from "../src/graphql/mutations";
-// import { CreateVoteMutation } from "../src/API";
-// import { listVotes, getProposal } from "../src/graphql/queries";
+export const ProposalView = ({ id, title, description }: Proposal) => {
+  async function registerVote() {
+    const currentUser = await Auth.currentUserInfo();
+    const appUser = await DataStore.query(User, (u) =>
+      u.email("eq", currentUser.attributes.email)
+    )[0];
 
-export const ProposalView = ({ id, title, description, votes }: Proposal) => {
-  // const userID = useSelector((state) => state.user.userID);
-
-  // const voteTally = votes.items ? votes.items.length : 0;
-
-  function registerVote() {
-    // dispatch(createProposalVote(id))
-    (async function () {
-      //   const comments = (await DataStore.query(VoteModel)).filter(
-      //     (c) => c.proposal === id
-      //   );
-      //   console.log(comments);
-
-      // const currentUser = await Auth.currentUserInfo();
-      // const res = (await API.graphql(
-      //   graphqlOperation(createVote, {
-      //     input: { proposalID: id, increment: 1, userID: currentUser.id },
-      //   })
-      // )) as GraphQLResult<CreateVoteMutation>;
-
-      // const votes = await API.graphql(
-      //   graphqlOperation(listVotes, { input: { proposalID: id } })
-      // );
-      console.log(votes);
-    })();
+    if (appUser && appUser.tokens > 0) {
+      const subtractedTokens = appUser.tokens - 10;
+      await DataStore.save(
+        User.copyOf(appUser, (updated) => {
+          updated.tokens = subtractedTokens;
+        })
+      );
+    }
+    DataStore.save(new Vote({ proposalID: id, userID: currentUser.id }));
   }
 
+  const [votes, setVotes] = useState([]);
+
   useEffect(() => {
-    // const subscription = DataStore.observe(ProposalModel).subscribe(
-    //   (res) => {
-    //     console.log(res);
-    //   },
-    //   (err) => {
-    //     console.warn(err);
-    //   }
-    // );
-    // return () => subscription.unsubscribe();
+    listVotes(setVotes);
+
+    DataStore.observe(Vote, (p) => p.proposalID("eq", id)).subscribe((msg) => {
+      listVotes(setVotes);
+    });
   }, []);
+
+  async function listVotes(setVotes) {
+    const proposals = await DataStore.query(Vote, (p) =>
+      p.proposalID("eq", id)
+    );
+    setVotes(proposals);
+  }
 
   return (
     <Box

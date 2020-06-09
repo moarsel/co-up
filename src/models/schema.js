@@ -55,7 +55,7 @@ export const schema = {
                     "attributes": [],
                     "association": {
                         "connectionType": "HAS_MANY",
-                        "associatedWith": "topic"
+                        "associatedWith": "topicID"
                     }
                 },
                 "userID": {
@@ -157,18 +157,12 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "topic": {
-                    "name": "topic",
+                "topicID": {
+                    "name": "topicID",
                     "isArray": false,
-                    "type": {
-                        "model": "Topic"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "association": {
-                        "connectionType": "BELONGS_TO",
-                        "targetName": "topicID"
-                    }
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
                 },
                 "userID": {
                     "name": "userID",
@@ -200,7 +194,7 @@ export const schema = {
                     "attributes": [],
                     "association": {
                         "connectionType": "HAS_MANY",
-                        "associatedWith": "proposal"
+                        "associatedWith": "proposalID"
                     }
                 },
                 "votes": {
@@ -213,7 +207,7 @@ export const schema = {
                     "attributes": [],
                     "association": {
                         "connectionType": "HAS_MANY",
-                        "associatedWith": "id"
+                        "associatedWith": "proposalID"
                     }
                 }
             },
@@ -336,18 +330,12 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "proposal": {
-                    "name": "proposal",
+                "proposalID": {
+                    "name": "proposalID",
                     "isArray": false,
-                    "type": {
-                        "model": "Proposal"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "association": {
-                        "connectionType": "BELONGS_TO",
-                        "targetName": "proposalID"
-                    }
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
                 },
                 "content": {
                     "name": "content",
@@ -362,19 +350,6 @@ export const schema = {
                     "type": "ID",
                     "isRequired": true,
                     "attributes": []
-                },
-                "user": {
-                    "name": "user",
-                    "isArray": false,
-                    "type": {
-                        "model": "User"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "association": {
-                        "connectionType": "HAS_ONE",
-                        "associatedWith": "id"
-                    }
                 }
             },
             "syncable": true,
@@ -430,18 +405,12 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "proposal": {
-                    "name": "proposal",
+                "proposalID": {
+                    "name": "proposalID",
                     "isArray": false,
-                    "type": {
-                        "model": "Proposal"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "association": {
-                        "connectionType": "BELONGS_TO",
-                        "targetName": "proposalID"
-                    }
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
                 },
                 "userID": {
                     "name": "userID",
@@ -449,19 +418,6 @@ export const schema = {
                     "type": "ID",
                     "isRequired": true,
                     "attributes": []
-                },
-                "user": {
-                    "name": "user",
-                    "isArray": false,
-                    "type": {
-                        "model": "User"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "association": {
-                        "connectionType": "HAS_ONE",
-                        "associatedWith": "id"
-                    }
                 }
             },
             "syncable": true,
@@ -478,16 +434,6 @@ export const schema = {
                         "fields": [
                             "proposalID",
                             "id"
-                        ]
-                    }
-                },
-                {
-                    "type": "key",
-                    "properties": {
-                        "name": "byProposalUser",
-                        "fields": [
-                            "proposalID",
-                            "userID"
                         ]
                     }
                 },
@@ -521,5 +467,5 @@ export const schema = {
     },
     "enums": {},
     "nonModels": {},
-    "version": "07b6452a25bf255555c2f6efce2ed8d5"
+    "version": "0a43ecd99404d0c6eddc6d9c7d0d8878"
 };

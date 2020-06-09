@@ -22,7 +22,7 @@ export declare class Proposal {
   readonly id: string;
   readonly title: string;
   readonly description: string;
-  readonly topic?: Topic;
+  readonly topicID: string;
   readonly userID: string;
   readonly user?: User;
   readonly comments?: Comment[];
@@ -42,19 +42,17 @@ export declare class User {
 
 export declare class Comment {
   readonly id: string;
-  readonly proposal?: Proposal;
+  readonly proposalID: string;
   readonly content: string;
   readonly userID: string;
-  readonly user?: User;
   constructor(init: ModelInit<Comment>);
   static copyOf(source: Comment, mutator: (draft: MutableModel<Comment>) => MutableModel<Comment> | void): Comment;
 }
 
 export declare class Vote {
   readonly id: string;
-  readonly proposal?: Proposal;
+  readonly proposalID: string;
   readonly userID: string;
-  readonly user?: User;
   constructor(init: ModelInit<Vote>);
   static copyOf(source: Vote, mutator: (draft: MutableModel<Vote>) => MutableModel<Vote> | void): Vote;
 }
