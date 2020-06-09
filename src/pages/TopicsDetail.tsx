@@ -41,7 +41,7 @@ function TopicDetails() {
     DataStore.observe(Proposal, (p) => p.topicID("eq", id)).subscribe((msg) => {
       listProposals(setProposals);
     });
-  }, []);
+  }, [id]);
 
   async function listProposals(setProposals) {
     const proposals = await DataStore.query(Proposal, (p) =>

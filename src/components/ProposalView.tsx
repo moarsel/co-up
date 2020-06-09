@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { Box, Heading, Text, Button } from "grommet";
-import { DataStore, Predicates } from "@aws-amplify/datastore";
+import { DataStore } from "@aws-amplify/datastore";
 import { Proposal, Vote, User } from "../models";
 import { Auth } from "aws-amplify";
 
 export const ProposalView = ({ id, title, description }: Proposal) => {
   async function registerVote() {
     const currentUser = await Auth.currentUserInfo();
-    const appUser = await DataStore.query(User, (u) =>
-      u.email("eq", currentUser.attributes.email)
+    const appUser = (await DataStore.query(User)).filter(
+      (u) => u.email === currentUser.attributes.email
     )[0];
 
     if (appUser && appUser.tokens > 0) {
-      const subtractedTokens = appUser.tokens - 10;
+      const subtractedTokens = appUser.tokens - 1;
       await DataStore.save(
         User.copyOf(appUser, (updated) => {
           updated.tokens = subtractedTokens;
@@ -30,13 +30,11 @@ export const ProposalView = ({ id, title, description }: Proposal) => {
     DataStore.observe(Vote, (p) => p.proposalID("eq", id)).subscribe((msg) => {
       listVotes(setVotes);
     });
-  }, []);
+  }, [id]);
 
   async function listVotes(setVotes) {
-    const proposals = await DataStore.query(Vote, (p) =>
-      p.proposalID("eq", id)
-    );
-    setVotes(proposals);
+    const votes = await DataStore.query(Vote, (p) => p.proposalID("eq", id));
+    setVotes(votes);
   }
 
   return (

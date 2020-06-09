@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Box, Heading } from "grommet";
 import { TopicSummary } from "../components/TopicSummary";
-import { Auth, DataStore } from "aws-amplify";
+import { DataStore } from "aws-amplify";
 import { Topic } from "../models";
 
 function TopicsPage() {
@@ -9,7 +9,6 @@ function TopicsPage() {
 
   useEffect(() => {
     (async function () {
-      const currentUser = await Auth.currentUserInfo();
       const list = await DataStore.query(Topic);
       setTopics(list);
     })();

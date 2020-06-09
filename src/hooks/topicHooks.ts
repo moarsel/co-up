@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Auth, DataStore } from "aws-amplify";
-import { Topic, Proposal } from "../models";
+import { Topic } from "../models";
 
 export function useUserID() {
   const [userID, setUserID] = useState();

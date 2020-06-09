@@ -14,22 +14,19 @@ import {
   Text,
   DropButton,
   Box,
-  Button,
 } from "grommet";
 import {
   Calendar,
   ChatOption,
   Money,
   User as UserIcon,
-  Google,
-  Facebook,
+  Ticket,
 } from "grommet-icons";
 import { theme } from "./theme";
 import { AppBar } from "./components/AppBar";
 
 import Amplify, { Auth, DataStore } from "aws-amplify";
 import {
-  withAuthenticator,
   AmplifyFacebookButton,
   AmplifyGoogleButton,
   AmplifySignOut,
@@ -54,7 +51,9 @@ async function getUser(setUser) {
   let appUser;
   try {
     const authUser = await Auth.currentUserInfo();
-    appUser = await DataStore.query(User, authUser.id);
+    appUser = (await DataStore.query(User)).filter(
+      (u) => u.email === authUser.attributes.email
+    )[0];
 
     console.log(authUser, appUser);
     if (!appUser || !appUser.id) {
@@ -79,11 +78,9 @@ function App() {
   useEffect(() => {
     getUser(setUser);
 
-    DataStore.observe(User, (u) => u.email("eq", user.email)).subscribe(
-      (msg) => {
-        setUser(user);
-      }
-    );
+    DataStore.observe(User).subscribe((msg) => {
+      getUser(setUser);
+    });
   }, []);
 
   return (
@@ -151,7 +148,10 @@ function App() {
                 <DropButton
                   label={
                     <Box flex direction="row" align="center">
-                      Up-Votes: {user.tokens}
+                      <Ticket color="brand" />
+                      <Text margin={{ left: "small" }} weight="bold">
+                        {user.tokens}
+                      </Text>
                       <Avatar margin={{ left: "small" }} background="accent-2">
                         <UserIcon color="white" />
                       </Avatar>
@@ -160,7 +160,7 @@ function App() {
                   dropAlign={{ top: "bottom", right: "right" }}
                   dropContent={
                     <Box width={"medium"} background="light-1" pad="medium">
-                      {user && (
+                      {!user && (
                         <>
                           <AmplifyFacebookButton
                             onClick={() => oauthSignup("Facebook", setUser)}
