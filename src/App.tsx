@@ -39,8 +39,20 @@ import TopicsPage from "./pages/TopicsPage";
 import TopicsDetail from "./pages/TopicsDetail";
 import CreateTopic from "./pages/CreateTopic";
 import { User } from "./models";
+import { isLocalhost } from "./serviceWorker";
 
-Amplify.configure(awsconfig);
+const updatedConfig = {
+  ...awsconfig,
+  oauth: isLocalhost
+    ? awsconfig.oauth
+    : {
+        ...awsconfig.oauth,
+        redirectSignIn: "https://master.d37f8su7ed1a90.amplifyapp.com/",
+        redirectSignOut: "https://master.d37f8su7ed1a90.amplifyapp.com/",
+      },
+};
+
+Amplify.configure(updatedConfig);
 
 async function oauthSignup(provider, setUser) {
   await Auth.federatedSignIn({ provider: provider });
