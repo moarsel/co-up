@@ -24,7 +24,7 @@ export const TopicSummary: React.FC<TopicSummaryProps> = (topic) => (
         round="small"
         elevation="large"
       >
-        <Heading level="3" as="h2" margin={{ top: "small" }}>
+        <Heading level="3" as="h2" margin={{ top: "small", bottom: "xsmall" }}>
           {topic.title}
         </Heading>
         <TopicStatus {...topic} />

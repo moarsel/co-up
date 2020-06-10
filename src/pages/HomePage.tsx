@@ -25,7 +25,7 @@ function HomePage(isSignedIn: any, handleSignUp: any) {
       >
         <Heading as="h1" level="2" margin={"none"}>
           Build your Community, <br />
-          with your Community
+          with your community
         </Heading>
         <Text margin="medium">
           Co-Up helps you engage your community to make community decisions.
