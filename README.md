@@ -19,7 +19,7 @@ Co-up is an application that helps communities manage stakeholder voting and fun
 - Create and view any number of topics. Each topic may have any number of proposals from members. Each topic can have an arbitrary reward tickets that are rewarded to members who engaged before the topic was closed.
 - Prefill the topic description based on topic "type" templates (work in progress).
 - Quadratic voting on proposals with a fun ballot-stuffing micro-interaction that balances intuitiveness and ease-of-use with flexibililty.
-- Quadratic voting (work in progress)
+- Fundraising with quadratic funding (work in progress)
 - Dark mode: advocacy themed (planned)
 - Amenity booking auction (planned)
 
