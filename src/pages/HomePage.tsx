@@ -37,12 +37,11 @@ function HomePage(isSignedIn: any, handleSignUp: any) {
             <li>Condo boards</li>
           </ul>
         </Text>
-        {!isSignedIn ? (
+        {isSignedIn ? (
           <Button primary href="/topics" label="Get Started" size="large" />
         ) : (
           <Box width="medium">
-            <AmplifyFacebookButton onClick={() => handleSignUp("Facebook")} />
-            <AmplifyGoogleButton onClick={() => handleSignUp("Google")} />
+            Click the user avatar in top right to sign up.
           </Box>
         )}
       </Box>

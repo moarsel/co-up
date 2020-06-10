@@ -25,13 +25,13 @@ import { AppBar } from "./components/AppBar";
 
 import { ReactComponent as Logo } from "./assets/logo.svg";
 import Amplify, { Auth, DataStore } from "aws-amplify";
+import awsconfig from "./aws-exports";
+
 import {
   AmplifyFacebookButton,
   AmplifyGoogleButton,
   AmplifySignOut,
 } from "@aws-amplify/ui-react";
-
-import awsconfig from "./aws-exports";
 
 import FundsPage from "./pages/FundsPage";
 import HomePage from "./pages/HomePage";
@@ -53,9 +53,9 @@ const updatedConfig = {
 };
 
 Amplify.configure(updatedConfig);
-
 async function oauthSignup(provider, setUser) {
   await Auth.federatedSignIn({ provider: provider });
+  getUser(setUser);
 }
 
 async function getUser(setUser) {
@@ -66,14 +66,14 @@ async function getUser(setUser) {
       (u) => u.email === authUser.attributes.email
     )[0];
 
-    // console.log(authUser, appUser);
+    console.log(authUser, appUser);
     if (!appUser || !appUser.id) {
-      console.log("creating new");
+      console.log("creating new user");
       appUser = await DataStore.save(
         new User({
           name: authUser.attributes.name,
-          email: authUser.id,
-          tokens: 100,
+          email: authUser.attributes.email,
+          tokens: 200,
         })
       );
     }
@@ -92,7 +92,7 @@ function App() {
     DataStore.observe(User).subscribe((msg) => {
       getUser(setUser);
     });
-  }, []);
+  }, [user.tokens]);
 
   return (
     <div>
