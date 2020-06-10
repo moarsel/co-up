@@ -16,6 +16,8 @@ import {
   Box,
 } from "grommet";
 import { Calendar, ChatOption, Money, User as UserIcon } from "grommet-icons";
+import FlipNumbers from "react-flip-numbers";
+
 import { ReactComponent as Ticket } from "./assets/Ballot.svg";
 
 import { theme } from "./theme";
@@ -52,7 +54,7 @@ async function getUser(setUser) {
       (u) => u.email === authUser.attributes.email
     )[0];
 
-    console.log(authUser, appUser);
+    // console.log(authUser, appUser);
     if (!appUser || !appUser.id) {
       console.log("creating new");
       appUser = await DataStore.save(
@@ -127,7 +129,7 @@ function App() {
                   <Money />
                   <Text margin={{ left: "small", top: "xsmall" }}>Funding</Text>
                 </NavLink>
-                <NavLink
+                {/* <NavLink
                   to="/booking"
                   component={Anchor}
                   activeStyle={{
@@ -139,14 +141,22 @@ function App() {
                 >
                   <Calendar />
                   <Text margin={{ left: "small", top: "xsmall" }}>Booking</Text>
-                </NavLink>
+                </NavLink> */}
                 <DropButton
                   plain
                   label={
                     <Box flex direction="row" align="center">
                       <Ticket />
                       <Text margin={{ left: "small" }} weight="bold">
-                        {user.tokens}
+                        <FlipNumbers
+                          height={19}
+                          width={12}
+                          color="#7916ab"
+                          perspective={200}
+                          play
+                          delay={500}
+                          numbers={String(user.tokens)}
+                        ></FlipNumbers>
                       </Text>
                       <Avatar margin={{ left: "small" }} background="accent-2">
                         <UserIcon color="white" />
@@ -156,7 +166,7 @@ function App() {
                   dropAlign={{ top: "bottom", right: "right" }}
                   dropContent={
                     <Box width={"medium"} background="light-1" pad="medium">
-                      {!user && (
+                      {!user.email && (
                         <>
                           <AmplifyFacebookButton
                             onClick={() => oauthSignup("Facebook", setUser)}
@@ -171,10 +181,10 @@ function App() {
                           {user.name}
                         </Text>
                       )}
-                      {user && user.tokens && (
+                      {user.email && (
                         <Text margin="medium">Earned this month: 300</Text>
                       )}
-                      {user && <AmplifySignOut />}
+                      {user.email && <AmplifySignOut />}
                     </Box>
                   }
                 />
@@ -197,7 +207,10 @@ function App() {
             </Route>
 
             <Route path="/">
-              <HomePage />
+              <HomePage
+                isSignedIn={Boolean(user && user.email)}
+                handleSignUp={(provider) => oauthSignup(provider, setUser)}
+              />
             </Route>
           </Switch>
         </Grommet>

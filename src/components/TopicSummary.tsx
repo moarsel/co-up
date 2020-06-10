@@ -1,33 +1,35 @@
 import React from "react";
 import { Box, Heading, Text, Anchor } from "grommet";
 import { Link } from "react-router-dom";
+import TopicStatus from "./TopicStatus";
 
 type TopicSummaryProps = {
   id?: string;
   title?: string;
   description?: string;
+  type: string;
+  reward: number;
+  endDate?: string;
 };
 
-export const TopicSummary: React.FC<TopicSummaryProps> = ({
-  id,
-  title,
-  description,
-}) => (
-  <Link to={`/topics/${id}`} component={Anchor}>
-    <Box direction="row" align="center">
+export const TopicSummary: React.FC<TopicSummaryProps> = (topic) => (
+  <Link to={`/topics/${topic.id}`} component={Anchor}>
+    <Box direction="row" align="center" flex width="large">
       <Box
-        pad={{
-          left: "none",
-          right: "small",
-          vertical: "small",
-          bottom: "medium",
-        }}
+        flex
+        fill
+        justify="between"
+        margin={{ vertical: "small" }}
+        pad={"medium"}
+        round="small"
+        elevation="large"
       >
-        <Heading level="3" as="h2" margin="none">
-          {title}
+        <Heading level="3" as="h2" margin={{ top: "small" }}>
+          {topic.title}
         </Heading>
-        <Text size="small" margin={{ bottom: "xsmall" }}></Text>
-        <Text size="large">{description}</Text>
+        <TopicStatus {...topic} />
+        <Text size="small" margin={{ vertical: "xsmall" }}></Text>
+        <Text size="large">{topic.description}</Text>
       </Box>
     </Box>
   </Link>

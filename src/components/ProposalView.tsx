@@ -6,36 +6,52 @@ import { Auth } from "aws-amplify";
 import { VoteBox } from "../components/VoteBox";
 
 export const ProposalView = ({ id, title, description }: Proposal) => {
-  async function registerVote() {
-    const currentUser = await Auth.currentUserInfo();
+  const [currentUser, setCurrentUser] = useState({ id: "", attributes: {} });
+  const [votes, setVotes] = useState([]);
+  const [userVotes, setUserVotes] = useState(1);
+
+  async function registerVote(currentUser, userVotes) {
     const appUser = (await DataStore.query(User)).filter(
       (u) => u.email === currentUser.attributes.email
     )[0];
 
-    if (appUser && appUser.tokens > 0) {
-      const subtractedTokens = appUser.tokens - 1;
+    const voteCost = userVotes * userVotes;
+    if (appUser && appUser.tokens > voteCost) {
+      const subtractedTokens = appUser.tokens - voteCost;
       await DataStore.save(
         User.copyOf(appUser, (updated) => {
           updated.tokens = subtractedTokens;
         })
       );
+      DataStore.save(new Vote({ proposalID: id, userID: currentUser.id }));
     }
-    DataStore.save(new Vote({ proposalID: id, userID: currentUser.id }));
   }
-
-  const [votes, setVotes] = useState([]);
 
   useEffect(() => {
     listVotes(setVotes);
+    getUser(setCurrentUser);
+    getUserVotes(votes, currentUser.id, setUserVotes);
 
     DataStore.observe(Vote, (p) => p.proposalID("eq", id)).subscribe((msg) => {
       listVotes(setVotes);
+      getUser(setCurrentUser);
+      getUserVotes(votes, currentUser.id, setUserVotes);
     });
-  }, [id]);
+  }, [id, currentUser.id]);
 
   async function listVotes(setVotes) {
     const votes = await DataStore.query(Vote, (p) => p.proposalID("eq", id));
     setVotes(votes);
+  }
+
+  async function getUser(setCurrentUser) {
+    const user = await Auth.currentUserInfo();
+    setCurrentUser(user);
+  }
+
+  async function getUserVotes(votes, userID, setUserVotes) {
+    const voteCount = votes.filter((v) => v.userID === userID).length;
+    setUserVotes(voteCount);
   }
 
   return (
@@ -58,9 +74,9 @@ export const ProposalView = ({ id, title, description }: Proposal) => {
       </Box>
       <Box width="small" align="center">
         <VoteBox
-          voteCost={1}
-          voteCount={votes.length}
-          handleClick={registerVote}
+          userVoteCount={userVotes}
+          totalVoteCount={votes.length}
+          handleClick={() => registerVote(currentUser, userVotes)}
         />
       </Box>
     </Box>

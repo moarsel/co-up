@@ -1,20 +1,21 @@
 import React from "react";
 import { Box, Text, DropButton, Button } from "grommet";
 import { motion } from "framer-motion";
+import FlipNumbers from "react-flip-numbers";
 
 import { ReactComponent as Ticket } from "../assets/Ballot.svg";
 import { ReactComponent as VoteBoxFront } from "../assets/VoteBoxFront.svg";
 import { ReactComponent as VoteBoxBack } from "../assets/VoteBoxBack.svg";
 
 type VoteBoxProps = {
-  voteCost: number;
-  voteCount: number;
+  userVoteCount: number;
+  totalVoteCount: number;
   handleClick: () => void;
 };
 
 export const VoteBox: React.FC<VoteBoxProps> = ({
-  voteCost,
-  voteCount,
+  userVoteCount,
+  totalVoteCount,
   handleClick,
 }) => {
   const containerVariants = {
@@ -56,7 +57,7 @@ export const VoteBox: React.FC<VoteBoxProps> = ({
       y: -60,
       transition: {
         when: "beforeChildren",
-        staggerChildren: 0.1,
+        staggerChildren: 0,
       },
     },
     exit: {
@@ -65,6 +66,8 @@ export const VoteBox: React.FC<VoteBoxProps> = ({
       y: 0,
     },
   };
+
+  const voteCost = userVoteCount * userVoteCount || 1;
 
   return (
     <Box
@@ -84,10 +87,7 @@ export const VoteBox: React.FC<VoteBoxProps> = ({
           style={{ position: "relative" }}
         >
           <Box flex direction="column" justify="center">
-            <motion.div
-              variants={voteBoxVariants}
-              style={{ zIndex: 0, display: "flex" }}
-            >
+            <motion.div style={{ zIndex: 0, display: "flex" }}>
               <VoteBoxBack></VoteBoxBack>
             </motion.div>
             <motion.div
@@ -111,10 +111,7 @@ export const VoteBox: React.FC<VoteBoxProps> = ({
                 <Text>× {voteCost}</Text>
               </motion.div>
             </motion.div>
-            <motion.div
-              variants={voteBoxVariants}
-              style={{ zIndex: 2, display: "flex" }}
-            >
+            <motion.div style={{ zIndex: 2, display: "flex" }}>
               <VoteBoxFront></VoteBoxFront>
             </motion.div>
           </Box>
@@ -122,16 +119,31 @@ export const VoteBox: React.FC<VoteBoxProps> = ({
       </Button>
       <Text margin={{ vertical: "small" }} weight={"bold"}>
         <DropButton
-          dropAlign={{ left: "left", top: "top" }}
+          dropAlign={{}}
           dropContent={
             <Box pad="medium">
               You used: <input type="number" value={voteCost}></input> tickets
-              for {voteCount / voteCost} votes.
-              <p>Total of {voteCount} votes from 4 people.</p>
+              for {userVoteCount} votes.
+              <p>Total of {totalVoteCount} votes from x people.</p>
             </Box>
           }
         >
-          {voteCount} votes
+          <Box flex direction="row" align="center">
+            <FlipNumbers
+              height={19}
+              width={12}
+              color="black"
+              perspective={200}
+              play
+              numbers={String(totalVoteCount)}
+            >
+              {totalVoteCount}
+            </FlipNumbers>
+
+            <Text size="large" margin={{ left: "xsmall" }}>
+              Votes
+            </Text>
+          </Box>
         </DropButton>
       </Text>
     </Box>

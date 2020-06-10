@@ -24,7 +24,7 @@ function TopicsPage() {
         <Heading level="1">Topics</Heading>
         <Link to="/topics/create" component={LinkButton} />
       </Box>
-      <Box align="start" fill>
+      <Box>
         {topics && topics.map((t) => <TopicSummary key={t.id} {...t} />)}
       </Box>
     </Box>

@@ -18,6 +18,7 @@ import { DataStore, Auth } from "aws-amplify";
 import { Proposal } from "../models";
 import { useTopicByID } from "../hooks/topicHooks";
 import { ProposalView } from "../components/ProposalView";
+import TopicStatus from "../components/TopicStatus";
 
 function TopicDetails() {
   const { id } = useParams();
@@ -84,13 +85,7 @@ function TopicDetails() {
     }
   }
 
-  function humanizeTime(dateTime: string) {
-    if (dateTime) {
-      return formatDistance(new Date(dateTime), new Date());
-    }
-  }
-
-  const { reward, type, title, description, endDate } = useTopicByID(id);
+  const topic = useTopicByID(id);
 
   return (
     <Box
@@ -99,40 +94,11 @@ function TopicDetails() {
       margin={{ vertical: "large", horizontal: "auto" }}
     >
       <Heading level="2" as="h1" margin={{ bottom: "small" }}>
-        {title}
+        {topic.title}
       </Heading>
-      <Box flex direction="row" align="center">
-        <Trophy />
-        <Text
-          weight="bold"
-          size="small"
-          margin={{ left: "xsmall", right: "medium" }}
-          color="neutral-3"
-        >
-          Reward: {reward} tokens
-        </Text>
-
-        <CircleInformation />
-        <Text
-          weight="bold"
-          size="small"
-          margin={{ left: "xsmall", right: "medium" }}
-          color="neutral-3"
-        >
-          Type: {type}
-        </Text>
-        <Calendar />
-        <Text
-          weight="bold"
-          size="small"
-          margin={{ left: "xsmall", right: "medium" }}
-          color="neutral-3"
-        >
-          Voting ends {humanizeTime(endDate)}
-        </Text>
-      </Box>
+      <TopicStatus {...topic} />
       <Box margin={{ vertical: "medium" }}>
-        <Text size="xlarge">{description}</Text>
+        <Text size="xlarge">{topic.description}</Text>
       </Box>
 
       {proposals.map((proposal: Proposal) => (
