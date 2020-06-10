@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 
 type TopicSummaryProps = {
   id?: string;
-
   title?: string;
   description?: string;
 };
@@ -24,7 +23,7 @@ export const TopicSummary: React.FC<TopicSummaryProps> = ({
           bottom: "medium",
         }}
       >
-        <Heading level="2" margin="none">
+        <Heading level="3" as="h2" margin="none">
           {title}
         </Heading>
         <Text size="small" margin={{ bottom: "xsmall" }}></Text>

@@ -3,6 +3,7 @@ import { Box, Heading, Text, Button } from "grommet";
 import { DataStore } from "@aws-amplify/datastore";
 import { Proposal, Vote, User } from "../models";
 import { Auth } from "aws-amplify";
+import { VoteBox } from "../components/VoteBox";
 
 export const ProposalView = ({ id, title, description }: Proposal) => {
   async function registerVote() {
@@ -56,8 +57,11 @@ export const ProposalView = ({ id, title, description }: Proposal) => {
         <Text>{description}</Text>
       </Box>
       <Box width="small" align="center">
-        <Button primary color="accent-4" label="Vote" onClick={registerVote} />
-        <Text>{votes.length}</Text>
+        <VoteBox
+          voteCost={1}
+          voteCount={votes.length}
+          handleClick={registerVote}
+        />
       </Box>
     </Box>
   );

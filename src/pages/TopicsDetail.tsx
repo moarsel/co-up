@@ -11,7 +11,7 @@ import {
   Button,
   Form,
 } from "grommet";
-import { History, CircleInformation, Trophy } from "grommet-icons";
+import { Calendar, CircleInformation, Trophy } from "grommet-icons";
 import { withAuthenticator } from "@aws-amplify/ui-react";
 import { DataStore, Auth } from "aws-amplify";
 
@@ -36,6 +36,7 @@ function TopicDetails() {
   );
 
   useEffect(() => {
+    getUser();
     listProposals(setProposals);
 
     DataStore.observe(Proposal, (p) => p.topicID("eq", id)).subscribe((msg) => {
@@ -48,6 +49,11 @@ function TopicDetails() {
       p.topicID("eq", id)
     );
     setProposals(proposals);
+  }
+
+  async function getUser() {
+    const user = await Auth.currentUserInfo();
+    setInput("userID", user.id);
   }
 
   function setInput(key: string, value: string) {
@@ -66,11 +72,13 @@ function TopicDetails() {
         return;
       }
       const user = await Auth.currentUserInfo();
-      await DataStore.save(
-        new Proposal({ ...proposalFormState, userID: user.id })
-      );
+      await DataStore.save(new Proposal(proposalFormState));
       listProposals(setProposals);
-      setProposalFormState(initialProposalFormState);
+      setProposalFormState({
+        ...proposalFormState,
+        title: "",
+        description: "",
+      });
     } catch (err) {
       console.log("error creating todo:", err);
     }
@@ -82,7 +90,7 @@ function TopicDetails() {
     }
   }
 
-  const { reward, type, title, description } = useTopicByID(id);
+  const { reward, type, title, description, endDate } = useTopicByID(id);
 
   return (
     <Box
@@ -113,14 +121,14 @@ function TopicDetails() {
         >
           Type: {type}
         </Text>
-        <History />
+        <Calendar />
         <Text
           weight="bold"
           size="small"
           margin={{ left: "xsmall", right: "medium" }}
           color="neutral-3"
         >
-          Created {humanizeTime(new Date().toISOString())} ago
+          Voting ends {humanizeTime(endDate)}
         </Text>
       </Box>
       <Box margin={{ vertical: "medium" }}>
@@ -132,7 +140,9 @@ function TopicDetails() {
       ))}
 
       <Box pad="medium" border="all" margin={{ vertical: "large" }}>
-        <Text size="large">Propose an option</Text>
+        <Heading level="4" as="h2" size="large" margin="none">
+          Propose an option
+        </Heading>
         <Form onSubmit={() => submitProposalForm(setProposals)}>
           <FormField label="Title">
             <TextInput
@@ -150,7 +160,7 @@ function TopicDetails() {
               placeholder="Why should this proposal be considered"
             />
           </FormField>
-          <Button type="submit" label="Add Proposal" />
+          <Button type="submit" label="Add Proposal" primary />
         </Form>
       </Box>
     </Box>

@@ -15,16 +15,13 @@ import {
   DropButton,
   Box,
 } from "grommet";
-import {
-  Calendar,
-  ChatOption,
-  Money,
-  User as UserIcon,
-  Ticket,
-} from "grommet-icons";
+import { Calendar, ChatOption, Money, User as UserIcon } from "grommet-icons";
+import { ReactComponent as Ticket } from "./assets/Ballot.svg";
+
 import { theme } from "./theme";
 import { AppBar } from "./components/AppBar";
 
+import { ReactComponent as Logo } from "./assets/logo.svg";
 import Amplify, { Auth, DataStore } from "aws-amplify";
 import {
   AmplifyFacebookButton,
@@ -100,7 +97,7 @@ function App() {
                 }}
               >
                 <Heading level="3" margin="none">
-                  Co-Up
+                  <Logo />
                 </Heading>
               </NavLink>
               <Nav direction="row" align="center" pad={"xsmall"}>
@@ -128,9 +125,7 @@ function App() {
                   style={{ display: "flex", alignItems: "center" }}
                 >
                   <Money />
-                  <Text margin={{ left: "small", top: "xsmall" }} size="small">
-                    Funding
-                  </Text>
+                  <Text margin={{ left: "small", top: "xsmall" }}>Funding</Text>
                 </NavLink>
                 <NavLink
                   to="/booking"
@@ -146,9 +141,10 @@ function App() {
                   <Text margin={{ left: "small", top: "xsmall" }}>Booking</Text>
                 </NavLink>
                 <DropButton
+                  plain
                   label={
                     <Box flex direction="row" align="center">
-                      <Ticket color="brand" />
+                      <Ticket />
                       <Text margin={{ left: "small" }} weight="bold">
                         {user.tokens}
                       </Text>

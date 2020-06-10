@@ -1,8 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Box, Heading } from "grommet";
+import { Box, Heading, Anchor, Button } from "grommet";
 import { TopicSummary } from "../components/TopicSummary";
 import { DataStore } from "aws-amplify";
 import { Topic } from "../models";
+import { Link } from "react-router-dom";
+
+const LinkButton = (props) => (
+  <Button label="Create Topic" primary {...props} />
+);
 
 function TopicsPage() {
   const [topics, setTopics] = useState<Topic[]>();
@@ -14,16 +19,15 @@ function TopicsPage() {
     })();
   }, []);
   return (
-    <div>
-      <Box direction="row" flex pad={"medium"}>
-        <Box flex>
-          <Heading level="1">Topics</Heading>
-          <Box align="start" fill>
-            {topics && topics.map((t) => <TopicSummary key={t.id} {...t} />)}
-          </Box>
-        </Box>
+    <Box width="large" margin="auto" pad="medium">
+      <Box direction="row" flex justify="between" align="center">
+        <Heading level="1">Topics</Heading>
+        <Link to="/topics/create" component={LinkButton} />
       </Box>
-    </div>
+      <Box align="start" fill>
+        {topics && topics.map((t) => <TopicSummary key={t.id} {...t} />)}
+      </Box>
+    </Box>
   );
 }
 

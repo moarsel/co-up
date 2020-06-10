@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import {
   Box,
@@ -9,22 +9,34 @@ import {
   Form,
   Button,
   Calendar,
+  TextArea,
 } from "grommet";
 
 import { withAuthenticator } from "@aws-amplify/ui-react";
-
-import { useUserID } from "../hooks/userHooks";
+import { DataStore, Auth } from "aws-amplify";
+import { Topic } from "../models";
+import { useHistory } from "react-router-dom";
 
 function CreateTopic() {
-  const userID = useUserID();
   const initialState = {
     title: "",
     description: "",
     reward: 0,
     type: "",
-    endDate: new Date(),
-    userID: userID,
+    endDate: new Date().toISOString(),
+    userID: "",
   };
+
+  let history = useHistory();
+
+  async function getUser() {
+    const user = await Auth.currentUserInfo();
+    setInput("userID", user.id);
+  }
+
+  useEffect(() => {
+    getUser();
+  }, []);
 
   const [formState, setFormState] = useState(initialState);
 
@@ -32,13 +44,14 @@ function CreateTopic() {
     setFormState({ ...formState, [key]: value });
   }
 
-  function sendValue() {
+  async function sendValue() {
     try {
       if (!formState.title || !formState.description) return;
+      const topic = await DataStore.save(new Topic(formState));
       setFormState(initialState);
-      //   dispatch(addTopic(JSON.parse(JSON.stringify(formState))));
+      history.push(`/topics/${topic.id}`);
     } catch (err) {
-      console.log("error creating todo:", err);
+      console.log("error creating topic:", err);
     }
   }
 
@@ -46,6 +59,7 @@ function CreateTopic() {
     <Box
       width="large"
       pad="medium"
+      align="start"
       margin={{ vertical: "large", horizontal: "auto" }}
     >
       <Form onSubmit={sendValue}>
@@ -59,44 +73,50 @@ function CreateTopic() {
             onChange={({ option }) => setInput("type", option)}
           />
         </FormField>
-        <FormField label="title" margin={{ vertical: "large" }}>
+        <FormField label="Title" margin={{ vertical: "large" }}>
           <TextInput
             onChange={(event) => setInput("title", event.target.value)}
             value={formState.title}
             placeholder="Title"
+            required
           />
         </FormField>
         <FormField label="Description" margin={{ vertical: "large" }}>
-          <TextInput
+          <TextArea
             onChange={(event) => setInput("description", event.target.value)}
             value={formState.description}
-            placeholder="Description"
+            placeholder="What is the purpose of this vote?"
+            aria-description="What is the purpose of this vote?"
+            required
           />
         </FormField>
 
-        <FormField label="Reward" margin={{ vertical: "large" }}>
+        <FormField label="Participation Reward" margin={{ vertical: "large" }}>
           <TextInput
             type="number"
-            onChange={(event) => setInput("reward", event.target.value)}
+            onChange={(event) => setInput("reward", Number(event.target.value))}
             value={formState.reward}
-            placeholder="Reward"
+            placeholder="How many tickets should people get for participating?"
+            aria-description="How many tickets should people get for participating?"
           />
         </FormField>
-        <FormField label="End Date">
-          <Calendar
-            date={formState.endDate.toISOString()}
-            onChange={(e) => setInput("endDate", e)}
-          >
-            {({ inputProps, focused }) => (
-              <TextInput
-                plain={true}
-                className={"input" + (focused ? " -focused" : "")}
-                {...inputProps}
-              />
-            )}
-          </Calendar>
-        </FormField>
-        <Button type="submit" label="Create" />
+        <Box align="start">
+          <FormField label="End Date">
+            <Calendar
+              date={formState.endDate}
+              onSelect={(e) => setInput("endDate", e)}
+            >
+              {({ inputProps, focused }) => (
+                <TextInput
+                  plain={true}
+                  className={"input" + (focused ? " -focused" : "")}
+                  {...inputProps}
+                />
+              )}
+            </Calendar>
+          </FormField>
+        </Box>
+        <Button type="submit" label="Create" primary />
       </Form>
     </Box>
   );
