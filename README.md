@@ -2,7 +2,7 @@
 
 Co-up is an application that helps communities manage stakeholder voting and funding. Homeowner associations, condo boards, and community co-ops can use this tool to help facilitate decision making and encourage shared fundraising.
 
-(**NOTE**: This project is currently in alpha, under heavy development. Security and privacy are not robust)
+(**NOTE**: This project is currently in alpha, under heavy development. Security and privacy are not robust.)
 
 ## Instructions
 
