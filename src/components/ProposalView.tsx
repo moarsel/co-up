@@ -4,18 +4,20 @@ import { DataStore } from "@aws-amplify/datastore";
 import { Proposal, Vote, User } from "../models";
 import { Auth } from "aws-amplify";
 import { VoteBox } from "../components/VoteBox";
+import { useAmplifyAuth } from "../hooks/userHooks";
 
 export const ProposalView = ({ id, title, description }: Proposal) => {
-  const [currentUser, setCurrentUser] = useState({ id: "", attributes: {} });
+  const { state } = useAmplifyAuth();
+  const [currentUser, setCurrentUser] = useState({ id: "" });
   const [votes, setVotes] = useState([]);
   const [userVotes, setUserVotes] = useState(1);
 
-  async function registerVote(currentUser, userVotes) {
+  async function registerVote(authUser, userVotes) {
     const appUser = (await DataStore.query(User)).filter(
-      (u) => u.email === currentUser.attributes.email
+      (u) => u.email === authUser.attributes.email
     )[0];
 
-    const voteCost = userVotes * userVotes;
+    const voteCost = userVotes < 2 ? userVotes + 1 : userVotes * userVotes;
     if (appUser && appUser.tokens >= voteCost) {
       const subtractedTokens = appUser.tokens - voteCost;
       await DataStore.save(
@@ -31,12 +33,12 @@ export const ProposalView = ({ id, title, description }: Proposal) => {
 
   useEffect(() => {
     listVotes(setVotes);
-    getUser(setCurrentUser);
+    getUser(setCurrentUser, state.user);
     getUserVotes(votes, currentUser.id, setUserVotes);
 
     DataStore.observe(Vote, (p) => p.proposalID("eq", id)).subscribe((msg) => {
       listVotes(setVotes);
-      getUser(setCurrentUser);
+      getUser(setCurrentUser, state.user);
       getUserVotes(votes, currentUser.id, setUserVotes);
     });
   }, [id, votes.length]);
@@ -46,15 +48,18 @@ export const ProposalView = ({ id, title, description }: Proposal) => {
     setVotes(votes);
   }
 
-  async function getUser(setCurrentUser) {
-    const user = await Auth.currentUserInfo();
-    setCurrentUser(user);
+  async function getUser(setUser, authUser) {
+    if (authUser) {
+      const appUser = (await DataStore.query(User)).filter(
+        (u) => u.email === authUser.attributes.email
+      )[0];
+      setUser(appUser);
+    }
   }
 
   async function getUserVotes(votes, userID, setUserVotes) {
     const voteCount = votes.filter((v) => v.userID === userID).length;
     setUserVotes(voteCount);
-    console.log(votes, userID, voteCount);
   }
 
   return (
@@ -79,7 +84,7 @@ export const ProposalView = ({ id, title, description }: Proposal) => {
         <VoteBox
           userVoteCount={userVotes}
           totalVoteCount={votes.length}
-          handleClick={() => registerVote(currentUser, userVotes)}
+          handleClick={() => registerVote(state.user, userVotes)}
         />
       </Box>
     </Box>

@@ -25,5 +25,32 @@
                 }
             }
         }
+    },
+    "prod": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-co-up-prod-173723-authRole",
+            "UnauthRoleArn": "arn:aws:iam::139773180379:role/amplify-co-up-prod-173723-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::139773180379:role/amplify-co-up-prod-173723-authRole",
+            "Region": "us-east-1",
+            "DeploymentBucketName": "amplify-co-up-prod-173723-deployment",
+            "UnauthRoleName": "amplify-co-up-prod-173723-unauthRole",
+            "StackName": "amplify-co-up-prod-173723",
+            "StackId": "arn:aws:cloudformation:us-east-1:139773180379:stack/amplify-co-up-prod-173723/9318eb50-ab62-11ea-a929-0ed2247e0ea9",
+            "AmplifyAppId": "d37f8su7ed1a90"
+        },
+        "categories": {
+            "auth": {
+                "coupb7f8c912": {
+                    "hostedUIProviderCreds": "[{\"ProviderName\":\"Facebook\",\"client_id\":\"2895886753862233\",\"client_secret\":\"6b646c6ba926f5ed670091d53e117622\"},{\"ProviderName\":\"Google\",\"client_id\":\"73219825520-3venh94hq3dpaj16uurjl6cjntcahhsu.apps.googleusercontent.com\",\"client_secret\":\"L4HCJo4MFlTWXixHFBd_xkdz\"}]"
+                }
+            },
+            "function": {
+                "coupb7f8c912CustomMessage": {
+                    "REDIRECTURL": "https://master.d37f8su7ed1a90.amplifyapp.com/",
+                    "EMAILSUBJECT": "Welcome!",
+                    "EMAILMESSAGE": "Please confirm your email to join."
+                }
+            }
+        }
     }
 }

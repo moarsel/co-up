@@ -153,20 +153,6 @@ export const syncProposals = /* GraphQL */ `
         title
         description
         topicID
-        topic {
-          id
-          title
-          description
-          type
-          reward
-          endDate
-          userID
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
         userID
         user {
           id
@@ -205,35 +191,6 @@ export const getProposal = /* GraphQL */ `
       title
       description
       topicID
-      topic {
-        id
-        title
-        description
-        type
-        reward
-        endDate
-        proposals {
-          nextToken
-          startedAt
-        }
-        userID
-        user {
-          id
-          name
-          email
-          tokens
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
       userID
       user {
         id
@@ -295,20 +252,6 @@ export const listProposals = /* GraphQL */ `
         title
         description
         topicID
-        topic {
-          id
-          title
-          description
-          type
-          reward
-          endDate
-          userID
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
         userID
         user {
           id
@@ -356,31 +299,8 @@ export const syncComments = /* GraphQL */ `
       items {
         id
         proposalID
-        proposal {
-          id
-          title
-          description
-          topicID
-          userID
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
         content
         userID
-        user {
-          id
-          name
-          email
-          tokens
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
         _version
         _deleted
         _lastChangedAt
@@ -397,64 +317,8 @@ export const getComment = /* GraphQL */ `
     getComment(id: $id) {
       id
       proposalID
-      proposal {
-        id
-        title
-        description
-        topicID
-        topic {
-          id
-          title
-          description
-          type
-          reward
-          endDate
-          userID
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-        userID
-        user {
-          id
-          name
-          email
-          tokens
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-        comments {
-          nextToken
-          startedAt
-        }
-        votes {
-          nextToken
-          startedAt
-        }
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
       content
       userID
-      user {
-        id
-        name
-        email
-        tokens
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
       _version
       _deleted
       _lastChangedAt
@@ -473,31 +337,8 @@ export const listComments = /* GraphQL */ `
       items {
         id
         proposalID
-        proposal {
-          id
-          title
-          description
-          topicID
-          userID
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
         content
         userID
-        user {
-          id
-          name
-          email
-          tokens
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
         _version
         _deleted
         _lastChangedAt
@@ -525,30 +366,7 @@ export const syncVotes = /* GraphQL */ `
       items {
         id
         proposalID
-        proposal {
-          id
-          title
-          description
-          topicID
-          userID
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
         userID
-        user {
-          id
-          name
-          email
-          tokens
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
         _version
         _deleted
         _lastChangedAt
@@ -565,63 +383,7 @@ export const getVote = /* GraphQL */ `
     getVote(id: $id) {
       id
       proposalID
-      proposal {
-        id
-        title
-        description
-        topicID
-        topic {
-          id
-          title
-          description
-          type
-          reward
-          endDate
-          userID
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-        userID
-        user {
-          id
-          name
-          email
-          tokens
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-        comments {
-          nextToken
-          startedAt
-        }
-        votes {
-          nextToken
-          startedAt
-        }
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
       userID
-      user {
-        id
-        name
-        email
-        tokens
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
       _version
       _deleted
       _lastChangedAt
@@ -640,30 +402,7 @@ export const listVotes = /* GraphQL */ `
       items {
         id
         proposalID
-        proposal {
-          id
-          title
-          description
-          topicID
-          userID
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
         userID
-        user {
-          id
-          name
-          email
-          tokens
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
         _version
         _deleted
         _lastChangedAt

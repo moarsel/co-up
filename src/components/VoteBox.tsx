@@ -67,7 +67,8 @@ export const VoteBox: React.FC<VoteBoxProps> = ({
     },
   };
 
-  const voteCost = userVoteCount * userVoteCount || 1;
+  const voteCost =
+    userVoteCount < 2 ? userVoteCount + 1 : userVoteCount * userVoteCount;
 
   return (
     <Box

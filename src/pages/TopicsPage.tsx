@@ -4,6 +4,7 @@ import { TopicSummary } from "../components/TopicSummary";
 import { DataStore } from "aws-amplify";
 import { Topic } from "../models";
 import { Link } from "react-router-dom";
+import { withAuthenticator } from "@aws-amplify/ui-react";
 
 const LinkButton = (props) => (
   <Button label="Create Topic" primary {...props} />
@@ -31,4 +32,4 @@ function TopicsPage() {
   );
 }
 
-export default TopicsPage;
+export default withAuthenticator(TopicsPage);

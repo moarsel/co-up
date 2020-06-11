@@ -4,6 +4,7 @@ import {
   Switch,
   Route,
   NavLink,
+  Link,
 } from "react-router-dom";
 import {
   Grommet,
@@ -14,8 +15,9 @@ import {
   Text,
   DropButton,
   Box,
+  Button,
 } from "grommet";
-import { Calendar, ChatOption, Money, User as UserIcon } from "grommet-icons";
+import { ChatOption, Money, User as UserIcon } from "grommet-icons";
 import FlipNumbers from "react-flip-numbers";
 
 import { ReactComponent as Ticket } from "./assets/Ballot.svg";
@@ -27,19 +29,16 @@ import { ReactComponent as Logo } from "./assets/logo.svg";
 import Amplify, { Auth, DataStore } from "aws-amplify";
 import awsconfig from "./aws-exports";
 
-import {
-  AmplifyFacebookButton,
-  AmplifyGoogleButton,
-  AmplifySignOut,
-} from "@aws-amplify/ui-react";
-
 import FundsPage from "./pages/FundsPage";
 import HomePage from "./pages/HomePage";
 import TopicsPage from "./pages/TopicsPage";
+import LoginPage from "./pages/LoginPage";
 import TopicsDetail from "./pages/TopicsDetail";
 import CreateTopic from "./pages/CreateTopic";
+import ProtectedRoute from "./components/ProtectedRoute";
 import { User } from "./models";
 import { isLocalhost } from "./serviceWorker";
+import { useAmplifyAuth } from "./hooks/userHooks";
 
 const updatedConfig = {
   ...awsconfig,
@@ -53,46 +52,28 @@ const updatedConfig = {
 };
 
 Amplify.configure(updatedConfig);
-async function oauthSignup(provider, setUser) {
-  await Auth.federatedSignIn({ provider: provider });
-  getUser(setUser);
-}
 
-async function getUser(setUser) {
-  let appUser;
-  try {
-    const authUser = await Auth.currentUserInfo();
-    appUser = (await DataStore.query(User)).filter(
+async function getUser(setUser, authUser) {
+  if (authUser) {
+    const appUser = (await DataStore.query(User)).filter(
       (u) => u.email === authUser.attributes.email
     )[0];
-
     console.log(authUser, appUser);
-    if (!appUser || !appUser.id) {
-      console.log("creating new user");
-      appUser = await DataStore.save(
-        new User({
-          name: authUser.attributes.name,
-          email: authUser.attributes.email,
-          tokens: 200,
-        })
-      );
-    }
     setUser(appUser);
-  } catch (e) {
-    console.warn("not logged in!");
   }
 }
 
 function App() {
+  const { state, handleSignout } = useAmplifyAuth();
   const [user, setUser] = useState({ tokens: 0, email: "", name: "" });
 
   useEffect(() => {
-    getUser(setUser);
+    getUser(setUser, state.user);
 
     DataStore.observe(User).subscribe((msg) => {
-      getUser(setUser);
+      getUser(setUser, state.user);
     });
-  }, [user.tokens]);
+  }, [state.user]);
 
   return (
     <div>
@@ -159,14 +140,19 @@ function App() {
                   label={
                     <Box flex direction="row" align="center">
                       <Ticket />
-                      <Text margin={{ left: "small" }} weight="bold">
+                      <Text
+                        margin={{ left: "small" }}
+                        weight="bold"
+                        style={{ width: "3rem" }}
+                      >
+                        {" "}
                         <FlipNumbers
-                          height={19}
-                          width={12}
+                          height={22}
+                          width={16}
                           color="#7916ab"
-                          perspective={200}
+                          perspective={100}
                           play
-                          delay={500}
+                          delay={0.5}
                           numbers={String(user.tokens)}
                         ></FlipNumbers>
                       </Text>
@@ -178,25 +164,22 @@ function App() {
                   dropAlign={{ top: "bottom", right: "right" }}
                   dropContent={
                     <Box width={"medium"} background="light-1" pad="medium">
-                      {!user.email && (
-                        <>
-                          <AmplifyFacebookButton
-                            onClick={() => oauthSignup("Facebook", setUser)}
-                          />
-                          <AmplifyGoogleButton
-                            onClick={() => oauthSignup("Google", setUser)}
-                          />
-                        </>
-                      )}
-                      {user && (
+                      {user.name && (
                         <Text margin="medium" weight="bold" size="large">
                           {user.name}
                         </Text>
                       )}
-                      {user.email && (
-                        <Text margin="medium">Earned this month: 300</Text>
+                      {state.user && (
+                        <>
+                          <Text margin="medium">Earned this month: 300</Text>
+                          <Button
+                            primary
+                            onClick={handleSignout}
+                            label="Sign out"
+                          />
+                        </>
                       )}
-                      {user.email && <AmplifySignOut />}
+                      {!state.user && <Link to="/login">Log in</Link>}
                     </Box>
                   }
                 />
@@ -205,24 +188,30 @@ function App() {
           </header>
 
           <Switch>
-            <Route path="/topics/create">
-              <CreateTopic />
+            <Route path="/login">
+              <LoginPage />
             </Route>
-            <Route path="/topics/:id">
-              <TopicsDetail />
-            </Route>
-            <Route path="/topics">
-              <TopicsPage />
-            </Route>
+            <ProtectedRoute
+              isSignedIn={Boolean(state.user)}
+              path="/topics/create"
+              component={CreateTopic}
+            />
+
+            <ProtectedRoute
+              isSignedIn={Boolean(state.user)}
+              path="/topics/:id"
+              component={TopicsDetail}
+            />
+            <ProtectedRoute
+              path="/topics"
+              isSignedIn={Boolean(state.user)}
+              component={TopicsPage}
+            />
             <Route path="/funds">
               <FundsPage />
             </Route>
-
             <Route path="/">
-              <HomePage
-                isSignedIn={Boolean(user && user.email)}
-                handleSignUp={(provider) => oauthSignup(provider, setUser)}
-              />
+              <HomePage />
             </Route>
           </Switch>
         </Grommet>

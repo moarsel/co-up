@@ -144,35 +144,6 @@ export const onCreateProposal = /* GraphQL */ `
       title
       description
       topicID
-      topic {
-        id
-        title
-        description
-        type
-        reward
-        endDate
-        proposals {
-          nextToken
-          startedAt
-        }
-        userID
-        user {
-          id
-          name
-          email
-          tokens
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
       userID
       user {
         id
@@ -229,35 +200,6 @@ export const onUpdateProposal = /* GraphQL */ `
       title
       description
       topicID
-      topic {
-        id
-        title
-        description
-        type
-        reward
-        endDate
-        proposals {
-          nextToken
-          startedAt
-        }
-        userID
-        user {
-          id
-          name
-          email
-          tokens
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
       userID
       user {
         id
@@ -314,35 +256,6 @@ export const onDeleteProposal = /* GraphQL */ `
       title
       description
       topicID
-      topic {
-        id
-        title
-        description
-        type
-        reward
-        endDate
-        proposals {
-          nextToken
-          startedAt
-        }
-        userID
-        user {
-          id
-          name
-          email
-          tokens
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
       userID
       user {
         id
@@ -397,64 +310,8 @@ export const onCreateComment = /* GraphQL */ `
     onCreateComment {
       id
       proposalID
-      proposal {
-        id
-        title
-        description
-        topicID
-        topic {
-          id
-          title
-          description
-          type
-          reward
-          endDate
-          userID
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-        userID
-        user {
-          id
-          name
-          email
-          tokens
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-        comments {
-          nextToken
-          startedAt
-        }
-        votes {
-          nextToken
-          startedAt
-        }
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
       content
       userID
-      user {
-        id
-        name
-        email
-        tokens
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
       _version
       _deleted
       _lastChangedAt
@@ -468,64 +325,8 @@ export const onUpdateComment = /* GraphQL */ `
     onUpdateComment {
       id
       proposalID
-      proposal {
-        id
-        title
-        description
-        topicID
-        topic {
-          id
-          title
-          description
-          type
-          reward
-          endDate
-          userID
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-        userID
-        user {
-          id
-          name
-          email
-          tokens
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-        comments {
-          nextToken
-          startedAt
-        }
-        votes {
-          nextToken
-          startedAt
-        }
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
       content
       userID
-      user {
-        id
-        name
-        email
-        tokens
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
       _version
       _deleted
       _lastChangedAt
@@ -539,64 +340,8 @@ export const onDeleteComment = /* GraphQL */ `
     onDeleteComment {
       id
       proposalID
-      proposal {
-        id
-        title
-        description
-        topicID
-        topic {
-          id
-          title
-          description
-          type
-          reward
-          endDate
-          userID
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-        userID
-        user {
-          id
-          name
-          email
-          tokens
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-        comments {
-          nextToken
-          startedAt
-        }
-        votes {
-          nextToken
-          startedAt
-        }
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
       content
       userID
-      user {
-        id
-        name
-        email
-        tokens
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
       _version
       _deleted
       _lastChangedAt
@@ -610,63 +355,7 @@ export const onCreateVote = /* GraphQL */ `
     onCreateVote {
       id
       proposalID
-      proposal {
-        id
-        title
-        description
-        topicID
-        topic {
-          id
-          title
-          description
-          type
-          reward
-          endDate
-          userID
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-        userID
-        user {
-          id
-          name
-          email
-          tokens
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-        comments {
-          nextToken
-          startedAt
-        }
-        votes {
-          nextToken
-          startedAt
-        }
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
       userID
-      user {
-        id
-        name
-        email
-        tokens
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
       _version
       _deleted
       _lastChangedAt
@@ -680,63 +369,7 @@ export const onUpdateVote = /* GraphQL */ `
     onUpdateVote {
       id
       proposalID
-      proposal {
-        id
-        title
-        description
-        topicID
-        topic {
-          id
-          title
-          description
-          type
-          reward
-          endDate
-          userID
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-        userID
-        user {
-          id
-          name
-          email
-          tokens
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-        comments {
-          nextToken
-          startedAt
-        }
-        votes {
-          nextToken
-          startedAt
-        }
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
       userID
-      user {
-        id
-        name
-        email
-        tokens
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
       _version
       _deleted
       _lastChangedAt
@@ -750,63 +383,7 @@ export const onDeleteVote = /* GraphQL */ `
     onDeleteVote {
       id
       proposalID
-      proposal {
-        id
-        title
-        description
-        topicID
-        topic {
-          id
-          title
-          description
-          type
-          reward
-          endDate
-          userID
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-        userID
-        user {
-          id
-          name
-          email
-          tokens
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-        comments {
-          nextToken
-          startedAt
-        }
-        votes {
-          nextToken
-          startedAt
-        }
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
       userID
-      user {
-        id
-        name
-        email
-        tokens
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
       _version
       _deleted
       _lastChangedAt

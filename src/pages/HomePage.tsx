@@ -1,11 +1,7 @@
 import React from "react";
 import { Heading, Text, Box, Button } from "grommet";
-import {
-  AmplifyFacebookButton,
-  AmplifyGoogleButton,
-} from "@aws-amplify/ui-react";
 
-function HomePage(isSignedIn: any, handleSignUp: any) {
+function HomePage() {
   return (
     <div>
       <img
@@ -37,13 +33,7 @@ function HomePage(isSignedIn: any, handleSignUp: any) {
             <li>Condo boards</li>
           </ul>
         </Text>
-        {isSignedIn ? (
-          <Button primary href="/topics" label="Get Started" size="large" />
-        ) : (
-          <Box width="medium">
-            Click the user avatar in top right to sign up.
-          </Box>
-        )}
+        <Button primary href="/topics" label="Get Started" size="large" />
       </Box>
     </div>
   );

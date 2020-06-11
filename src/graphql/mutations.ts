@@ -156,35 +156,6 @@ export const createProposal = /* GraphQL */ `
       title
       description
       topicID
-      topic {
-        id
-        title
-        description
-        type
-        reward
-        endDate
-        proposals {
-          nextToken
-          startedAt
-        }
-        userID
-        user {
-          id
-          name
-          email
-          tokens
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
       userID
       user {
         id
@@ -244,35 +215,6 @@ export const updateProposal = /* GraphQL */ `
       title
       description
       topicID
-      topic {
-        id
-        title
-        description
-        type
-        reward
-        endDate
-        proposals {
-          nextToken
-          startedAt
-        }
-        userID
-        user {
-          id
-          name
-          email
-          tokens
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
       userID
       user {
         id
@@ -332,35 +274,6 @@ export const deleteProposal = /* GraphQL */ `
       title
       description
       topicID
-      topic {
-        id
-        title
-        description
-        type
-        reward
-        endDate
-        proposals {
-          nextToken
-          startedAt
-        }
-        userID
-        user {
-          id
-          name
-          email
-          tokens
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
       userID
       user {
         id
@@ -418,64 +331,8 @@ export const createComment = /* GraphQL */ `
     createComment(input: $input, condition: $condition) {
       id
       proposalID
-      proposal {
-        id
-        title
-        description
-        topicID
-        topic {
-          id
-          title
-          description
-          type
-          reward
-          endDate
-          userID
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-        userID
-        user {
-          id
-          name
-          email
-          tokens
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-        comments {
-          nextToken
-          startedAt
-        }
-        votes {
-          nextToken
-          startedAt
-        }
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
       content
       userID
-      user {
-        id
-        name
-        email
-        tokens
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
       _version
       _deleted
       _lastChangedAt
@@ -492,64 +349,8 @@ export const updateComment = /* GraphQL */ `
     updateComment(input: $input, condition: $condition) {
       id
       proposalID
-      proposal {
-        id
-        title
-        description
-        topicID
-        topic {
-          id
-          title
-          description
-          type
-          reward
-          endDate
-          userID
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-        userID
-        user {
-          id
-          name
-          email
-          tokens
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-        comments {
-          nextToken
-          startedAt
-        }
-        votes {
-          nextToken
-          startedAt
-        }
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
       content
       userID
-      user {
-        id
-        name
-        email
-        tokens
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
       _version
       _deleted
       _lastChangedAt
@@ -566,64 +367,8 @@ export const deleteComment = /* GraphQL */ `
     deleteComment(input: $input, condition: $condition) {
       id
       proposalID
-      proposal {
-        id
-        title
-        description
-        topicID
-        topic {
-          id
-          title
-          description
-          type
-          reward
-          endDate
-          userID
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-        userID
-        user {
-          id
-          name
-          email
-          tokens
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-        comments {
-          nextToken
-          startedAt
-        }
-        votes {
-          nextToken
-          startedAt
-        }
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
       content
       userID
-      user {
-        id
-        name
-        email
-        tokens
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
       _version
       _deleted
       _lastChangedAt
@@ -640,63 +385,7 @@ export const createVote = /* GraphQL */ `
     createVote(input: $input, condition: $condition) {
       id
       proposalID
-      proposal {
-        id
-        title
-        description
-        topicID
-        topic {
-          id
-          title
-          description
-          type
-          reward
-          endDate
-          userID
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-        userID
-        user {
-          id
-          name
-          email
-          tokens
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-        comments {
-          nextToken
-          startedAt
-        }
-        votes {
-          nextToken
-          startedAt
-        }
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
       userID
-      user {
-        id
-        name
-        email
-        tokens
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
       _version
       _deleted
       _lastChangedAt
@@ -713,63 +402,7 @@ export const updateVote = /* GraphQL */ `
     updateVote(input: $input, condition: $condition) {
       id
       proposalID
-      proposal {
-        id
-        title
-        description
-        topicID
-        topic {
-          id
-          title
-          description
-          type
-          reward
-          endDate
-          userID
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-        userID
-        user {
-          id
-          name
-          email
-          tokens
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-        comments {
-          nextToken
-          startedAt
-        }
-        votes {
-          nextToken
-          startedAt
-        }
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
       userID
-      user {
-        id
-        name
-        email
-        tokens
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
       _version
       _deleted
       _lastChangedAt
@@ -786,63 +419,7 @@ export const deleteVote = /* GraphQL */ `
     deleteVote(input: $input, condition: $condition) {
       id
       proposalID
-      proposal {
-        id
-        title
-        description
-        topicID
-        topic {
-          id
-          title
-          description
-          type
-          reward
-          endDate
-          userID
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-        userID
-        user {
-          id
-          name
-          email
-          tokens
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-        comments {
-          nextToken
-          startedAt
-        }
-        votes {
-          nextToken
-          startedAt
-        }
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
       userID
-      user {
-        id
-        name
-        email
-        tokens
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
       _version
       _deleted
       _lastChangedAt

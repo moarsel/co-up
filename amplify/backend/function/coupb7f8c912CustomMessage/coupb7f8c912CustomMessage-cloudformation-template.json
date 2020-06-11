@@ -118,7 +118,7 @@
 				"Runtime": "nodejs10.x",
 				"Timeout": "25",
 				"Code": {
-					"S3Bucket": "amplify-co-up-dev-153646-deployment",
+					"S3Bucket": "amplify-co-up-prod-173723-deployment",
 					"S3Key": "amplify-builds/coupb7f8c912CustomMessage-4a67796656735a616531-build.zip"
 				}
 			}
