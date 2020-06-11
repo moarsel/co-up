@@ -59,7 +59,9 @@ async function getUser(setUser, authUser) {
       (u) => u.email === authUser.attributes.email
     )[0];
     console.log(authUser, appUser);
-    setUser(appUser);
+    if (appUser) {
+      setUser(appUser);
+    }
   }
 }
 

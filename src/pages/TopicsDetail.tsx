@@ -49,7 +49,9 @@ function TopicDetails() {
     const proposals = await DataStore.query(Proposal, (p) =>
       p.topicID("eq", id)
     );
-    setProposals(proposals);
+    if (proposals) {
+      setProposals(proposals);
+    }
   }
 
   async function getUser() {

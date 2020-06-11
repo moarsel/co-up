@@ -13,18 +13,6 @@ export function useUserID() {
   return userID;
 }
 
-export function useTopicsList() {
-  const [topics, setTopics] = useState([]);
-
-  useEffect(() => {
-    (async function () {
-      const list = await DataStore.query(Topic);
-      setTopics(list);
-    })();
-  }, []);
-  return topics;
-}
-
 export function useTopicByID(id): Topic {
   const initialState = { id: "", reward: 0, title: "", type: "", userID: "" };
   const [topic, setTopic] = useState(initialState);
@@ -32,7 +20,9 @@ export function useTopicByID(id): Topic {
   useEffect(() => {
     (async function () {
       const topic = await DataStore.query(Topic, id);
-      setTopic(topic);
+      if (topic) {
+        setTopic(topic);
+      }
     })();
   }, [id]);
   return topic;

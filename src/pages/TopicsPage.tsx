@@ -16,7 +16,9 @@ function TopicsPage() {
   useEffect(() => {
     (async function () {
       const list = await DataStore.query(Topic);
-      setTopics(list);
+      if (list) {
+        setTopics(list);
+      }
     })();
   }, []);
   return (

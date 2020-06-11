@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Box, Heading, Text, Button } from "grommet";
 import { DataStore } from "@aws-amplify/datastore";
-import { Proposal, Vote, User } from "../models";
+import { Proposal, Vote, User, Topic } from "../models";
 import { Auth } from "aws-amplify";
 import { VoteBox } from "../components/VoteBox";
 import { useAmplifyAuth } from "../hooks/userHooks";
@@ -16,6 +16,8 @@ export const ProposalView = ({ id, title, description }: Proposal) => {
     const appUser = (await DataStore.query(User)).filter(
       (u) => u.email === authUser.attributes.email
     )[0];
+
+    if (!appUser) return;
 
     const voteCost = userVotes < 2 ? userVotes + 1 : userVotes * userVotes;
     if (appUser && appUser.tokens >= voteCost) {
@@ -41,10 +43,16 @@ export const ProposalView = ({ id, title, description }: Proposal) => {
       getUser(setCurrentUser, state.user);
       getUserVotes(votes, currentUser.id, setUserVotes);
     });
+
+    return () =>
+      setInterval(() => {
+        listVotes(setVotes);
+      }, 5000);
   }, [id, votes.length]);
 
   async function listVotes(setVotes) {
     const votes = await DataStore.query(Vote, (p) => p.proposalID("eq", id));
+    console.log("votes", votes);
     setVotes(votes);
   }
 
