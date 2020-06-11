@@ -5,8 +5,9 @@ Co-up is an application that helps communities manage stakeholder voting and fun
 (**NOTE**: This project is currently in alpha, under heavy development. Security and privacy are not robust.)
 
 ## Instructions
+View the demo application here: https://master.d37f8su7ed1a90.amplifyapp.com/
 
-- Log in using a social provider (more options coming soon)
+- Log in using a social provider (email login is a bit buggy)
 - Visit the "Topics" page, then create a new topic on which you'd like community feedback. Set an appropriate reward to encourage member partipation (to be received when the topic closes).
 - Add proposals to the topic including the proposal rationale
 - Use your "Tickets" to vote on the proposals you care about
