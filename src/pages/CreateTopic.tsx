@@ -12,7 +12,6 @@ import {
   TextArea,
 } from "grommet";
 
-import { withAuthenticator } from "@aws-amplify/ui-react";
 import { DataStore, Auth } from "aws-amplify";
 import { Topic } from "../models";
 import { useHistory } from "react-router-dom";
@@ -122,4 +121,4 @@ function CreateTopic() {
   );
 }
 
-export default withAuthenticator(CreateTopic);
+export default CreateTopic;

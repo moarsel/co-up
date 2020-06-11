@@ -12,7 +12,6 @@ import {
   Form,
 } from "grommet";
 import { Calendar, CircleInformation, Trophy } from "grommet-icons";
-import { withAuthenticator } from "@aws-amplify/ui-react";
 import { DataStore, Auth } from "aws-amplify";
 
 import { Proposal } from "../models";
@@ -135,4 +134,4 @@ function TopicDetails() {
   );
 }
 
-export default withAuthenticator(TopicDetails);
+export default TopicDetails;

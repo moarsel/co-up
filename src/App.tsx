@@ -16,6 +16,7 @@ import {
   DropButton,
   Box,
   Button,
+  Layer,
 } from "grommet";
 import { ChatOption, Money, User as UserIcon } from "grommet-icons";
 import FlipNumbers from "react-flip-numbers";
@@ -39,9 +40,16 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import { User } from "./models";
 import { isLocalhost } from "./serviceWorker";
 import { useAmplifyAuth } from "./hooks/userHooks";
+import {
+  withAuthenticator,
+  AmplifyAuthenticator,
+  AmplifySignIn,
+  AmplifySignUp,
+} from "@aws-amplify/ui-react";
 
-const updatedConfig = {
+export const updatedConfig = {
   ...awsconfig,
+  usernameAlias: "email",
   oauth: isLocalhost
     ? awsconfig.oauth
     : {
@@ -49,6 +57,13 @@ const updatedConfig = {
         redirectSignIn: "https://master.d37f8su7ed1a90.amplifyapp.com/",
         redirectSignOut: "https://master.d37f8su7ed1a90.amplifyapp.com/",
       },
+};
+
+export const withWithAuthenticator = (Component) => {
+  return withAuthenticator(Component, {
+    usernameAlias: "email",
+    federated: { oauthConfig: { updatedConfig } },
+  });
 };
 
 Amplify.configure(updatedConfig);
@@ -188,7 +203,34 @@ function App() {
               </Nav>
             </AppBar>
           </header>
-
+          {!state.user && (
+            <Layer>
+              <AmplifyAuthenticator usernameAlias="email">
+                <AmplifySignUp
+                  slot="sign-up"
+                  usernameAlias="email"
+                  formFields={[
+                    {
+                      type: "name",
+                      label: "Name",
+                      required: true,
+                    },
+                    {
+                      type: "email",
+                      label: "Email",
+                      required: true,
+                    },
+                    {
+                      type: "password",
+                      label: "Password",
+                      required: true,
+                    },
+                  ]}
+                />
+                <AmplifySignIn slot="sign-in" usernameAlias="email" />
+              </AmplifyAuthenticator>
+            </Layer>
+          )}
           <Switch>
             <Route path="/login">
               <LoginPage />
