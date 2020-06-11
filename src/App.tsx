@@ -27,7 +27,7 @@ import { theme } from "./theme";
 import { AppBar } from "./components/AppBar";
 
 import { ReactComponent as Logo } from "./assets/logo.svg";
-import Amplify, { Auth, DataStore } from "aws-amplify";
+import Amplify, { DataStore } from "aws-amplify";
 import awsconfig from "./aws-exports";
 
 import FundsPage from "./pages/FundsPage";
@@ -59,21 +59,26 @@ export const updatedConfig = {
       },
 };
 
-export const withWithAuthenticator = (Component) => {
-  return withAuthenticator(Component, {
-    usernameAlias: "email",
-    federated: { oauthConfig: { updatedConfig } },
-  });
-};
-
 Amplify.configure(updatedConfig);
 
 async function getUser(setUser, authUser) {
+  let appUser;
   if (authUser) {
-    const appUser = (await DataStore.query(User)).filter(
+    appUser = (await DataStore.query(User)).filter(
       (u) => u.email === authUser.attributes.email
     )[0];
     console.log(authUser, appUser);
+
+    if (!appUser || !appUser.id) {
+      console.log("creating new user");
+      appUser = await DataStore.save(
+        new User({
+          name: authUser.attributes.name,
+          email: authUser.attributes.email,
+          tokens: 200,
+        })
+      );
+    }
     if (appUser) {
       setUser(appUser);
     }
@@ -203,7 +208,7 @@ function App() {
               </Nav>
             </AppBar>
           </header>
-          {!state.user && (
+          {!state.user && !state.isLoading && (
             <Layer>
               <AmplifyAuthenticator usernameAlias="email">
                 <AmplifySignUp
