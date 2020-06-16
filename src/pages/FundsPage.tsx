@@ -1,40 +1,47 @@
 import React from "react";
 import { Box, Heading, Button, Text } from "grommet";
 import FundsImage from "../assets/fundsPage.png";
+import { FundSummary } from "../components/FundsSummary";
+import { Link } from "react-router-dom";
+
+const LinkButton = (props) => (
+  <Button label="Propose a fund" primary {...props} />
+);
 
 function FundsPage() {
   return (
-    <div>
-      <img
-        src="https://images.unsplash.com/photo-1588613254750-cf5d89a29b66?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1908&q=80"
-        width="100%"
-        style={{ position: "absolute", zIndex: 0 }}
-        alt=""
-      />
-      <Box
-        width="large"
-        margin={{ horizontal: "auto", vertical: "medium" }}
-        pad="medium"
-        background="white"
-        elevation="medium"
-        align="center"
-        style={{ position: "absolute", left: 0, right: 0, top: "12rem" }}
-      >
-        <Heading as="h1" level="2" margin={"none"}>
-          Coming soon: community fundraising
-        </Heading>
-        <Text margin="medium">
-          Co-Up will soon enable your community to raise more money than you
-          ever thought possible. Stay tuned for:
-          <ul>
-            <li>Fundraising campaigns</li>
-            <li>Smart community matching</li>
-            <li>Collect and pay out funds using Stripe</li>
-          </ul>
-        </Text>
-        <img src={FundsImage} width="100%" alt="fundraising preview" />
+    <Box width="large" margin="auto" pad="medium">
+      <Box direction="row" flex justify="between" align="center">
+        <Heading level="1">Community Funds</Heading>
+        <Link to="/topics/create" component={LinkButton} />
       </Box>
-    </div>
+      <Box>
+        <FundSummary
+          reward={10}
+          endDate={"2020-07-16T14:18:47.182Z"}
+          title="NAACP Fundraiser"
+          goalAmount={5000}
+          contributedAmount={2000}
+          matchedAmount={1000}
+        />
+        <FundSummary
+          reward={15}
+          endDate={"2020-07-27T14:18:47.182Z"}
+          title="Swimming Pool Funds"
+          goalAmount={25000}
+          contributedAmount={4000}
+          matchedAmount={200}
+        />
+        <FundSummary
+          reward={15}
+          endDate={"2020-08-17T14:18:47.182Z"}
+          title="Landscaping Costs"
+          goalAmount={3500}
+          contributedAmount={2500}
+          matchedAmount={1000}
+        />
+      </Box>
+    </Box>
   );
 }
 
