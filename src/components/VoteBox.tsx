@@ -137,7 +137,6 @@ export const VoteBox: React.FC<VoteBoxProps> = ({
   return (
     <Box
       height="small"
-      flex
       align="center"
       pad={{
         top: "40px",
@@ -220,8 +219,9 @@ export const VoteBox: React.FC<VoteBoxProps> = ({
           dropAlign={{}}
           dropContent={
             <Box pad="medium">
-              You used: <input type="number" value={voteCost}></input> tickets
-              for {userVoteCount} votes.
+              You used:{" "}
+              <input type="number" value={voteCost} onChange={() => {}}></input>{" "}
+              tickets for {userVoteCount} votes.
               <p>Total of {totalVoteCount} votes from x people.</p>
             </Box>
           }

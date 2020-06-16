@@ -88,7 +88,7 @@ export const ProposalView = ({ id, title, description }: Proposal) => {
         </Heading>
         <Text>{description}</Text>
       </Box>
-      <Box width="small" align="center">
+      <Box width="small" align="center" basis="small" flex={false}>
         <VoteBox
           userVoteCount={userVotes}
           totalVoteCount={votes.length}
