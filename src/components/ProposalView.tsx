@@ -18,12 +18,12 @@ export const ProposalView = ({ id, title, description }: Proposal) => {
 
     if (!appUser) return;
 
-    const voteCost = userVotes < 2 ? userVotes + 1 : userVotes * userVotes;
+    const voteCost = (userVotes + 1) ** 2;
     if (appUser && appUser.tokens >= voteCost) {
-      const subtractedTokens = appUser.tokens - voteCost;
+      const remainingTokens = appUser.tokens - voteCost;
       await DataStore.save(
         User.copyOf(appUser, (updated) => {
-          updated.tokens = subtractedTokens;
+          updated.tokens = remainingTokens;
         })
       );
       await DataStore.save(new Vote({ proposalID: id, userID: appUser.id }));
@@ -38,7 +38,7 @@ export const ProposalView = ({ id, title, description }: Proposal) => {
     const sub = DataStore.observe(Vote, (p) =>
       p.proposalID("eq", id)
     ).subscribe(
-      (msg) => {
+      () => {
         listVotes(setVotes);
         getUserVotes(votes, currentUser.id, setUserVotes);
       },
@@ -47,14 +47,7 @@ export const ProposalView = ({ id, title, description }: Proposal) => {
       }
     );
 
-    const interval = setInterval(() => {
-      listVotes(setVotes);
-    }, 5000);
-
-    return () => {
-      sub.unsubscribe();
-      clearInterval(interval);
-    };
+    return () => sub.unsubscribe();
   }, [id, votes.length]);
 
   async function listVotes(setVotes) {

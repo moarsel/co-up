@@ -84,7 +84,11 @@ export const schema = {
             "attributes": [
                 {
                     "type": "model",
-                    "properties": {}
+                    "properties": {
+                        "subscriptions": {
+                            "level": "public"
+                        }
+                    }
                 },
                 {
                     "type": "key",
@@ -216,7 +220,11 @@ export const schema = {
             "attributes": [
                 {
                     "type": "model",
-                    "properties": {}
+                    "properties": {
+                        "subscriptions": {
+                            "level": "public"
+                        }
+                    }
                 },
                 {
                     "type": "key",
@@ -291,7 +299,11 @@ export const schema = {
             "attributes": [
                 {
                     "type": "model",
-                    "properties": {}
+                    "properties": {
+                        "subscriptions": {
+                            "level": "public"
+                        }
+                    }
                 },
                 {
                     "type": "auth",
@@ -357,7 +369,11 @@ export const schema = {
             "attributes": [
                 {
                     "type": "model",
-                    "properties": {}
+                    "properties": {
+                        "subscriptions": {
+                            "level": "public"
+                        }
+                    }
                 },
                 {
                     "type": "key",
@@ -425,7 +441,11 @@ export const schema = {
             "attributes": [
                 {
                     "type": "model",
-                    "properties": {}
+                    "properties": {
+                        "subscriptions": {
+                            "level": "public"
+                        }
+                    }
                 },
                 {
                     "type": "key",

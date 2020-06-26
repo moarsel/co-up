@@ -45,7 +45,7 @@ function TopicDetails() {
       listProposals(setProposals);
     });
 
-    return subscription.unsubscribe();
+    return () => subscription.unsubscribe();
   }, [id]);
 
   async function listProposals(setProposals) {

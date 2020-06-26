@@ -131,8 +131,7 @@ export const VoteBox: React.FC<VoteBoxProps> = ({
     },
   };
 
-  const voteCost =
-    userVoteCount < 2 ? userVoteCount + 1 : userVoteCount * userVoteCount;
+  const voteCost = (userVoteCount + 1) ** 2;
 
   return (
     <Box
@@ -220,9 +219,13 @@ export const VoteBox: React.FC<VoteBoxProps> = ({
           dropContent={
             <Box pad="medium">
               You used:{" "}
-              <input type="number" value={voteCost} onChange={() => {}}></input>{" "}
+              <input
+                type="number"
+                value={userVoteCount / userVoteCount}
+                onChange={() => {}}
+              ></input>{" "}
               tickets for {userVoteCount} votes.
-              <p>Total of {totalVoteCount} votes from x people.</p>
+              <p>Total of {totalVoteCount} votes.</p>
             </Box>
           }
         >

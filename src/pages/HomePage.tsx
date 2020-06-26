@@ -1,5 +1,7 @@
 import React from "react";
 import { Heading, Text, Box, Button } from "grommet";
+import { AnchorLink } from "../components/AnchorLink";
+import { ButtonLink } from "../components/ButtonLink";
 
 function HomePage() {
   return (
@@ -24,16 +26,25 @@ function HomePage() {
           with your community
         </Heading>
         <Text margin="medium">
-          Co-Up helps you engage your community to make community decisions.
-          Using cutting edge technology and real time voting, we'll help you
-          empower your community to set it's own priorities and raise funds.
+          Co-Up helps you engage your community to make community decisions. We
+          use cutting edge technology and mechanism design to help you empower
+          your community to set it's own priorities and raise funds.
+          <p>Who's this for?</p>
           <ul>
             <li>Home owner associations</li>
             <li>Community co-ops</li>
+            <li>Student societies</li>
             <li>Condo boards</li>
           </ul>
+          <p>Features</p>
+          <ul>
+            <li>Quadratic voting</li>
+            <li>Quadratic funding</li>
+            <li>Real-time sync</li>
+            <li>A modern, interactive interface</li>
+          </ul>
         </Text>
-        <Button primary href="/topics" label="Get Started" size="large" />
+        <ButtonLink to="/topics" label="Get Started" size="large" />
       </Box>
     </div>
   );

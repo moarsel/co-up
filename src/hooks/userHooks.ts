@@ -48,9 +48,9 @@ export const useAmplifyAuth = () => {
 
   useEffect(() => {
     let isMounted = true;
-    Hub.listen("datastore", (data) => {
-      console.log("A new event has happened:", JSON.stringify(data));
-    });
+    // Hub.listen("datastore", (data) => {
+    //   console.log("A new event has happened:", JSON.stringify(data));
+    // });
 
     const fetchUserData = async () => {
       if (isMounted) {

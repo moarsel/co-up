@@ -2,7 +2,7 @@ import React from "react";
 import { Box, Heading, Button, Text } from "grommet";
 import FundsImage from "../assets/fundsPage.png";
 import { FundSummary } from "../components/FundsSummary";
-import { Link } from "react-router-dom";
+import { AnchorLink } from "../components/AnchorLink";
 
 const LinkButton = (props) => (
   <Button label="Propose a fund" primary {...props} />
@@ -13,7 +13,7 @@ function FundsPage() {
     <Box width="large" margin="auto" pad="medium">
       <Box direction="row" flex justify="between" align="center">
         <Heading level="1">Community Funds</Heading>
-        <Link to="/topics/create" component={LinkButton} />
+        <AnchorLink to="/topics/create" />
       </Box>
       <Box>
         <FundSummary

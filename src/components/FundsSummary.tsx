@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, Heading, Text, Anchor, Meter, Button } from "grommet";
-import { Link } from "react-router-dom";
+import { AnchorLink } from "../components/AnchorLink";
 import TopicStatus from "./TopicStatus";
 
 type FundSummaryProps = {
@@ -16,7 +16,7 @@ type FundSummaryProps = {
 };
 
 export const FundSummary: React.FC<FundSummaryProps> = (fund) => (
-  <Link to={`/funds/${fund.id}`} component={Anchor}>
+  <AnchorLink to={`/funds/${fund.id}`}>
     <Box direction="row" align="center" flex width="large">
       <Box
         flex
@@ -104,5 +104,5 @@ export const FundSummary: React.FC<FundSummaryProps> = (fund) => (
         <Text size="large">{fund.description}</Text>
       </Box>
     </Box>
-  </Link>
+  </AnchorLink>
 );
