@@ -36,6 +36,7 @@ const amplifyAuthReducer = (state, action) => {
       throw new Error();
   }
 };
+
 export const useAmplifyAuth = () => {
   const initialState = {
     isLoading: true,
@@ -47,6 +48,9 @@ export const useAmplifyAuth = () => {
 
   useEffect(() => {
     let isMounted = true;
+    Hub.listen("datastore", (data) => {
+      console.log("A new event has happened:", JSON.stringify(data));
+    });
 
     const fetchUserData = async () => {
       if (isMounted) {

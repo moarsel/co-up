@@ -1,5 +1,5 @@
 type Topic
-  @model
+  @model(subscriptions: { level: public })
   @key(name: "byType", fields: ["type", "id"])
   @key(name: "byTypeDate", fields: ["type", "endDate"])
   @auth(rules: [{ allow: owner }, { allow: private, operations: [read] }]) {
@@ -15,7 +15,7 @@ type Topic
 }
 
 type Proposal
-  @model
+  @model(subscriptions: { level: public })
   @key(name: "byTopic", fields: ["topicID"])
   @auth(rules: [{ allow: owner }, { allow: private, operations: [read] }]) {
   id: ID!
@@ -29,7 +29,7 @@ type Proposal
 }
 
 type Comment
-  @model
+  @model(subscriptions: { level: public })
   @key(name: "byProposal", fields: ["proposalID"])
   @auth(rules: [{ allow: owner }, { allow: private, operations: [read] }]) {
   id: ID!
@@ -39,7 +39,7 @@ type Comment
 }
 
 type Vote
-  @model
+  @model(subscriptions: { level: public })
   @key(name: "byProposal", fields: ["proposalID", "id"])
   @auth(rules: [{ allow: owner }, { allow: private, operations: [read] }]) {
   id: ID!
@@ -48,7 +48,7 @@ type Vote
 }
 
 type User
-  @model
+  @model(subscriptions: { level: public })
   @auth(rules: [{ allow: owner }, { allow: private, operations: [read] }]) {
   id: ID!
   name: String

@@ -61,6 +61,16 @@ export const updatedConfig = {
 
 Amplify.configure(updatedConfig);
 
+// DataStore.configure({
+//   errorHandler: (error) => {
+//     console.warn("Unrecoverable error", { error });
+//   },
+//   maxRecordsToSync: 30000,
+//   fullSyncInterval: 60, // minutes
+// });
+
+// DataStore.start();
+
 async function getUser(setUser, authUser) {
   let appUser;
   if (authUser) {
@@ -92,9 +102,11 @@ function App() {
   useEffect(() => {
     getUser(setUser, state.user);
 
-    DataStore.observe(User).subscribe((msg) => {
+    const sub = DataStore.observe(User).subscribe((msg) => {
       getUser(setUser, state.user);
     });
+
+    return sub.unsubscribe();
   }, [state.user]);
 
   return (

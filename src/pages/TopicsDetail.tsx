@@ -39,9 +39,13 @@ function TopicDetails() {
     getUser();
     listProposals(setProposals);
 
-    DataStore.observe(Proposal, (p) => p.topicID("eq", id)).subscribe((msg) => {
+    const subscription = DataStore.observe(Proposal, (p) =>
+      p.topicID("eq", id)
+    ).subscribe((msg) => {
       listProposals(setProposals);
     });
+
+    return subscription.unsubscribe();
   }, [id]);
 
   async function listProposals(setProposals) {

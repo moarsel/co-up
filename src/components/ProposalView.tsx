@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Box, Heading, Text, Button } from "grommet";
 import { DataStore } from "@aws-amplify/datastore";
-import { Proposal, Vote, User, Topic } from "../models";
-import { Auth } from "aws-amplify";
+import { Proposal, Vote, User } from "../models";
 import { VoteBox } from "../components/VoteBox";
 import { useAmplifyAuth } from "../hooks/userHooks";
 
@@ -27,27 +26,35 @@ export const ProposalView = ({ id, title, description }: Proposal) => {
           updated.tokens = subtractedTokens;
         })
       );
-      await DataStore.save(
-        new Vote({ proposalID: id, userID: currentUser.id })
-      );
+      await DataStore.save(new Vote({ proposalID: id, userID: appUser.id }));
     }
   }
 
   useEffect(() => {
-    listVotes(setVotes);
     getUser(setCurrentUser, state.user);
+    listVotes(setVotes);
     getUserVotes(votes, currentUser.id, setUserVotes);
 
-    DataStore.observe(Vote, (p) => p.proposalID("eq", id)).subscribe((msg) => {
-      listVotes(setVotes);
-      getUser(setCurrentUser, state.user);
-      getUserVotes(votes, currentUser.id, setUserVotes);
-    });
-
-    return () =>
-      setInterval(() => {
+    const sub = DataStore.observe(Vote, (p) =>
+      p.proposalID("eq", id)
+    ).subscribe(
+      (msg) => {
         listVotes(setVotes);
-      }, 5000);
+        getUserVotes(votes, currentUser.id, setUserVotes);
+      },
+      (err) => {
+        console.warn(err);
+      }
+    );
+
+    const interval = setInterval(() => {
+      listVotes(setVotes);
+    }, 5000);
+
+    return () => {
+      sub.unsubscribe();
+      clearInterval(interval);
+    };
   }, [id, votes.length]);
 
   async function listVotes(setVotes) {
