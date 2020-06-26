@@ -35,7 +35,7 @@ export const ProposalView = ({ id, title, description }: Proposal) => {
     listVotes(setVotes);
     getUserVotes(votes, currentUser.id, setUserVotes);
 
-    const sub = DataStore.observe(Vote, (p) =>
+    const subscription = DataStore.observe(Vote, (p) =>
       p.proposalID("eq", id)
     ).subscribe(
       () => {
@@ -47,12 +47,11 @@ export const ProposalView = ({ id, title, description }: Proposal) => {
       }
     );
 
-    return () => sub.unsubscribe();
-  }, [id, votes.length]);
+    return () => subscription.unsubscribe();
+  }, [id, currentUser.id, votes.length]);
 
   async function listVotes(setVotes) {
     const votes = await DataStore.query(Vote, (p) => p.proposalID("eq", id));
-    console.log("votes", votes);
     setVotes(votes);
   }
 
