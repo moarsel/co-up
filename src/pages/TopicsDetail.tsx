@@ -13,7 +13,7 @@ import {
 import { LinkPrevious } from "grommet-icons";
 import { DataStore, Auth } from "aws-amplify";
 
-import { Proposal } from "../models";
+import { Proposal, Vote } from "../models";
 import { useTopicByID } from "../hooks/topicHooks";
 import { ProposalView } from "../components/ProposalView";
 import TopicStatus from "../components/TopicStatus";
@@ -53,7 +53,19 @@ function TopicDetails() {
       p.topicID("eq", id)
     );
     if (proposals) {
-      setProposals(proposals);
+      let proposalsWithVotes = [];
+      for (let i = 0; i < proposals.length; i++) {
+        const proposal = proposals[i];
+        const votes = await DataStore.query(Vote, (v) =>
+          v.proposalID("eq", proposal.id)
+        );
+        proposalsWithVotes[i] = { ...proposal, votes };
+      }
+
+      const sortedProposals = proposalsWithVotes.sort((a, b) => {
+        return a.votes?.length < b.votes?.length ? 1 : -1;
+      });
+      setProposals(sortedProposals);
     }
   }
 
