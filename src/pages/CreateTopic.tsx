@@ -15,6 +15,8 @@ import {
 import { DataStore, Auth } from "aws-amplify";
 import { Topic } from "../models";
 import { useHistory } from "react-router-dom";
+import { AnchorLink } from "../components/AnchorLink";
+import { LinkPrevious } from "grommet-icons";
 
 function CreateTopic() {
   const initialState = {
@@ -62,6 +64,7 @@ function CreateTopic() {
       margin={{ vertical: "large", horizontal: "auto" }}
     >
       <Form onSubmit={sendValue}>
+        <AnchorLink to="/topics" label="Back" icon={<LinkPrevious />} />
         <Heading level="2" margin="none">
           What topic do you want to discuss?
         </Heading>
@@ -80,23 +83,27 @@ function CreateTopic() {
             required
           />
         </FormField>
-        <FormField label="Description" margin={{ vertical: "large" }}>
+        <FormField
+          label="Description"
+          margin={{ vertical: "large" }}
+          help="What is the purpose of this vote?"
+        >
           <TextArea
             onChange={(event) => setInput("description", event.target.value)}
             value={formState.description}
-            placeholder="What is the purpose of this vote?"
-            aria-description="What is the purpose of this vote?"
             required
           />
         </FormField>
 
-        <FormField label="Participation Reward" margin={{ vertical: "large" }}>
+        <FormField
+          label="Participation Reward"
+          margin={{ vertical: "large" }}
+          help="How many tickets should people get for participating?"
+        >
           <TextInput
             type="number"
             onChange={(event) => setInput("reward", Number(event.target.value))}
             value={formState.reward}
-            placeholder="How many tickets should people get for participating?"
-            aria-description="How many tickets should people get for participating?"
           />
         </FormField>
         <Box align="start">

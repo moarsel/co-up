@@ -26,7 +26,9 @@ export const TopicSummary: React.FC<TopicSummaryProps> = (topic) => (
           </Heading>
           <TopicStatus {...topic} />
           <Text size="small" margin={{ vertical: "xsmall" }}></Text>
-          <Text size="large">{topic.description}</Text>
+          <Text size="large" weight="normal">
+            {topic.description.replace(/(.{250})..+/, "$1…")}
+          </Text>
         </Box>
       </Box>
     </AnchorLink>

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { formatDistance } from "date-fns";
 
 import {
   Box,
@@ -11,13 +10,14 @@ import {
   Button,
   Form,
 } from "grommet";
-import { Calendar, CircleInformation, Trophy } from "grommet-icons";
+import { LinkPrevious } from "grommet-icons";
 import { DataStore, Auth } from "aws-amplify";
 
 import { Proposal } from "../models";
 import { useTopicByID } from "../hooks/topicHooks";
 import { ProposalView } from "../components/ProposalView";
 import TopicStatus from "../components/TopicStatus";
+import { AnchorLink } from "../components/AnchorLink";
 
 function TopicDetails() {
   const { id } = useParams();
@@ -98,6 +98,7 @@ function TopicDetails() {
       pad="medium"
       margin={{ vertical: "large", horizontal: "auto" }}
     >
+      <AnchorLink to="/topics" label="Back" icon={<LinkPrevious />} />
       <Heading level="2" as="h1" margin={{ bottom: "small" }}>
         {topic.title}
       </Heading>
